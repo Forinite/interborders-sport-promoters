@@ -4,12 +4,13 @@ import { defineConfig } from 'sanity';
 import { deskTool } from 'sanity/desk';
 import { visionTool } from '@sanity/vision';
 import { schemaTypes } from './schemaTypes';
+import {apiVersion, dataset, projectId} from "@/sanity/env";
 
 export default defineConfig({
-    projectId: 'your-project-id', // ← Replace with yours
-    dataset: 'production',
+    projectId: projectId, // ← Replace with yours
+    dataset: dataset,
     title: 'YouthSportNG Admin',
-    apiVersion: '2024-01-01',
+    apiVersion: apiVersion,
     basePath: '/admin',
 
     plugins: [
