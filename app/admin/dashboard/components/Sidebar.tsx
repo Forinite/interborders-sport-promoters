@@ -79,7 +79,6 @@ export default function Sidebar({ open, onToggle }: SidebarProps) {
             </nav>
 
             <div className="p-4 border-t">
-                // Inside Sidebar.tsx — replace the logout button
                 <Button
                     variant="ghost"
                     className="w-full justify-start space-x-3"

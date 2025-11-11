@@ -2,7 +2,6 @@
 import type { Metadata } from 'next';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import { navLinks } from '@/constants/navLinks';
 
 export const metadata: Metadata = {
     title: 'About YouthSportNG | Our Mission & Team',
@@ -21,7 +20,7 @@ export default function AboutLayout({
 }) {
     return (
         <>
-            <Header navLinks={navLinks} />
+            <Header  />
             <main>{children}</main>
             <Footer />
         </>
