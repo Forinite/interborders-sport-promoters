@@ -52,7 +52,7 @@ export default function EditStoryModal({ story }: EditStoryModalProps) {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="p-6 space-y-4" defaultValue={story}>
+        <form onSubmit={handleSubmit} className="p-6 space-y-4" >
             <h3 className="text-lg font-semibold">Edit Story</h3>
 
             <div>
