@@ -5,7 +5,6 @@ import { useState } from 'react';
 import Sidebar from './components/Sidebar';
 import DashboardHeader from './components/DashboardHeader';
 import { ModalProvider } from './Modals/ModalContext';
-// import { Toaster } from '@/components/ui/toaster';
 
 export default function AdminLayoutClient({
                                               children,

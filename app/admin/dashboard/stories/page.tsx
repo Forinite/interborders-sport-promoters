@@ -6,9 +6,10 @@ import { STORIES_QUERY } from '@/lib/queries';
 import StoriesList from './StoriesList';
 import { Skeleton } from '@/components/ui/skeleton';
 import { AlertCircle } from 'lucide-react';
+import {Story} from "@/types";
 
 export default function StoriesPage() {
-    const { data: stories, loading, error, refetch } = useSanityData(STORIES_QUERY);
+    const { data: stories, loading, error, refetch } = useSanityData<Story>(STORIES_QUERY);
 
     if (loading) {
         return (

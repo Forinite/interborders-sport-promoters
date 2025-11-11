@@ -20,7 +20,7 @@ const navItems = [
     { name: 'Stories', href: '/admin/dashboard/stories', icon: FileText },
     { name: 'Events', href: '/admin/dashboard/sports/events', icon: Calendar },
     { name: 'News', href: '/admin/dashboard/sports/news', icon: Newspaper },
-    { name: 'Resources', href: '/admin/dashboard/counselling', icon: HeartHandshake },
+    { name: 'Resources', href: '/admin/dashboard/counselling/resources', icon: HeartHandshake },
 ];
 
 interface SidebarProps {
