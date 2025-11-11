@@ -26,7 +26,7 @@ export default function HomeLayout({
 }) {
     return (
         <>
-            <Header navLinks={navLinks} />
+            <Header />
             <main>{children}</main>
             <Footer />
         </>

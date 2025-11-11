@@ -21,7 +21,7 @@ export default function ContactLayout({
 }) {
     return (
         <>
-            <Header navLinks={navLinks} />
+            <Header />
             <main>{children}</main>
             <Footer />
         </>

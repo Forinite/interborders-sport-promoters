@@ -21,7 +21,7 @@ export default function StoriesLayout({
 }) {
     return (
         <>
-            <Header navLinks={navLinks} />
+            <Header />
             <main>{children}</main>
             <Footer />
         </>
