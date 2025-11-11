@@ -13,7 +13,7 @@ import { news } from './news';
 import { resource } from './resource';
 import { story } from './story';
 
-export const schema: SchemaTypeDefinition[] = [
+export const schemaTypes: SchemaTypeDefinition[] = [
     story,
     event,
     news,
