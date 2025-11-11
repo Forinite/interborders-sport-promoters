@@ -3,7 +3,7 @@
 import { defineConfig } from 'sanity';
 import { deskTool } from 'sanity/desk';
 import { visionTool } from '@sanity/vision';
-import { schemaTypes } from './schemaTypes';
+import { schema } from './schemaTypes';
 import {apiVersion, dataset, projectId} from "@/sanity/env";
 
 export default defineConfig({
@@ -19,6 +19,6 @@ export default defineConfig({
     ],
 
     schema: {
-        types: schemaTypes,
+        types: schema,
     },
 });
