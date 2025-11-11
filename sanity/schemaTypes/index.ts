@@ -5,7 +5,6 @@
 // }
 
 
-// sanity/schemasTypes/index.ts
 // sanity/schemaTypes/index.ts
 import { type SchemaTypeDefinition } from 'sanity';
 import { event } from './event';
