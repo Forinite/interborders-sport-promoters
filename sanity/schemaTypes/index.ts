@@ -6,9 +6,16 @@
 
 
 // sanity/schemasTypes/index.ts
-import story from './story';
-import event from './event';
-import news from './news';
-import resource from './resource';
+// sanity/schemaTypes/index.ts
+import { type SchemaTypeDefinition } from 'sanity';
+import { event } from './event';
+import { news } from './news';
+import { resource } from './resource';
+import { story } from './story';
 
-export const schemaTypes = [story, event, news, resource];
+export const schemaTypes: SchemaTypeDefinition[] = [
+    story,
+    event,
+    news,
+    resource,
+];
