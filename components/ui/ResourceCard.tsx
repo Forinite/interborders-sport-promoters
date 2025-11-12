@@ -1,24 +1,18 @@
 // components/ui/ResourceCard.tsx
 import Image from 'next/image';
 import Link from 'next/link';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from './card';
-import { Button } from './button';
-import { FileText, PlayCircle, BookOpen } from 'lucide-react';
-import { type Resource } from '@/types';
+import { FileText, PlayCircle, BookOpen, ArrowRight } from 'lucide-react';
+import {FootballerImage2} from "@/constants/images";
 
-type ResourceCardProps = {
-    resource: Resource;
-};
-
-export default function ResourceCard({ resource }: ResourceCardProps) {
+export default function ResourceCard({ resource }: { resource: any }) {
     const getIcon = () => {
         switch (resource.format) {
             case 'pdf':
-                return <FileText className="h-5 w-5" />;
+                return <FileText className="h-5 w-5 text-red-500" />;
             case 'video':
-                return <PlayCircle className="h-5 w-5" />;
+                return <PlayCircle className="h-5 w-5 text-blue-500" />;
             case 'article':
-                return <BookOpen className="h-5 w-5" />;
+                return <BookOpen className="h-5 w-5 text-emerald-500" />;
         }
     };
 
@@ -26,53 +20,66 @@ export default function ResourceCard({ resource }: ResourceCardProps) {
         switch (resource.format) {
             case 'pdf':
                 return (
-                    <Button asChild className="w-full">
-                        <a href={resource.fileUrl} target="_blank" rel="noopener noreferrer">
-                            Download PDF
-                        </a>
-                    </Button>
+                    <a
+                        href={resource.fileUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sky-600 font-semibold flex items-center gap-2 hover:gap-3 transition-all"
+                    >
+                        Download PDF <ArrowRight className="h-4 w-4" />
+                    </a>
                 );
             case 'video':
                 return (
-                    <Button asChild className="w-full">
-                        <a href={resource.videoUrl} target="_blank" rel="noopener noreferrer">
-                            Watch Video
-                        </a>
-                    </Button>
+                    <a
+                        href={resource.videoUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sky-600 font-semibold flex items-center gap-2 hover:gap-3 transition-all"
+                    >
+                        Watch Video <ArrowRight className="h-4 w-4" />
+                    </a>
                 );
             case 'article':
                 return (
-                    <Button asChild className="w-full">
-                        <Link href={`/counselling/${resource._id}`}>Read Article</Link>
-                    </Button>
+                    <Link
+                        href={`/counselling/${resource._id}`}
+                        className="text-sky-600 font-semibold flex items-center gap-2 hover:gap-3 transition-all"
+                    >
+                        Read Article <ArrowRight className="h-4 w-4" />
+                    </Link>
                 );
         }
     };
 
     return (
-        <Card className="h-full flex flex-col">
-            <div className="relative aspect-video bg-muted">
+        <div className="group relative bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden hover:shadow-lg transition-all">
+            <div className="relative aspect-video">
                 <Image
-                    src={`/images/resources/${resource._id}.jpg`}
+                    src={FootballerImage2}
                     alt={resource.title}
                     fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="object-cover transition-transform duration-700 group-hover:scale-105"
                 />
-            </div>
-            <CardHeader>
-                <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center gap-2 text-green-600">
-                        {getIcon()}
-                        <span className="text-sm font-medium capitalize">{resource.format}</span>
-                    </div>
+                <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-transparent" />
+
+                <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full text-sm font-medium flex items-center gap-2 border border-slate-200 shadow-sm">
+                    {getIcon()}
+                    <span className="uppercase tracking-wide text-slate-700">{resource.format}</span>
                 </div>
-                <CardTitle className="text-lg">{resource.title}</CardTitle>
-            </CardHeader>
-            <CardContent className="flex-1">
-                <CardDescription>{resource.summary}</CardDescription>
-            </CardContent>
-            <CardFooter>{getAction()}</CardFooter>
-        </Card>
+            </div>
+
+            <div className="p-6 flex flex-col justify-between min-h-[280px]">
+                <div>
+                    <h3 className="text-xl font-semibold text-slate-800 mb-3 line-clamp-2">
+                        {resource.title}
+                    </h3>
+                    <p className="text-slate-600 text-base leading-relaxed line-clamp-3">
+                        {resource.summary}
+                    </p>
+                </div>
+                <div className="mt-5 pt-4 border-t border-slate-100">{getAction()}</div>
+            </div>
+        </div>
     );
 }

@@ -22,7 +22,7 @@ export default function EventsAdminPage() {
     }
 
     if (error) return <p className="text-red-500">Error: {error}</p>;
-    if (!events?.length) return <p className="text-muted-foreground">No events found.</p>;
+    // if (!events?.length) return <p className="text-muted-foreground">No events found.</p>;
 
     return <EventsList events={events} />;
 }

@@ -3,7 +3,7 @@
 
 import { type TeamMember, type Partner } from '@/types';
 
-export const mission = `We believe every Nigerian child deserves access to sports and mental health support. Through structured programs, counselling, and community partnerships, we help youth build resilience, confidence, and purpose.`;
+export const mission = `We believe every child deserves access to sports and mental health support. Through structured programs, counselling, and community partnerships, we help youth build resilience, confidence, and purpose.`;
 
 export const team: TeamMember[] = [
     {

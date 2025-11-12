@@ -33,19 +33,21 @@
 // }
 
 // app/(components)/home/page.tsx
-// Updated to use static data
 
+// app/(components)/home/page.tsx
 import HeroSection from './components/HeroSection';
 import FeaturedStories from './components/FeaturedStories';
 import QuickLinks from './components/QuickLinks';
 import { featuredStories } from '@/constants/homeData';
+import GrainOverlay from '@/components/effects/GrainOverlay';
 
 export default function HomePage() {
     return (
-        <>
+        <main className="bg-black text-white overflow-hidden">
+            <GrainOverlay />
             <HeroSection />
             <FeaturedStories stories={featuredStories} />
             <QuickLinks />
-        </>
+        </main>
     );
 }

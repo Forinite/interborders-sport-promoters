@@ -24,3 +24,70 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+@layer utilities {
+  .animate-stutter {
+    animation: stutter 3s infinite;
+  }
+  .animate-blob {
+    animation: blob 7s infinite;
+  }
+  .animate-blob-reverse {
+    animation: blob 9s infinite reverse;
+  }
+  .animate-fade-up {
+    animation: fadeUp 1.2s ease-out forwards;
+  }
+  .delay-300 { animation-delay: 0.3s; }
+  .delay-700 { animation-delay: 0.7s; }
+  .delay-1000 { animation-delay: 1s; }
+}
+
+@keyframes stutter {
+  0%, 100% { transform: translateX(0); }
+  10% { transform: translateX(-5px) rotate(-1deg); }
+  20% { transform: translateX(5px) rotate(1deg); }
+  30% { transform: translateX(-3px) rotate(0); }
+}
+
+@keyframes blob {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -50px) scale(1.1); }
+  66% { transform: translate(-20px, 20px) scale(0.9); }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(60px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-30px) rotate(5deg); }
+}
+@keyframes float-reverse {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(30px) rotate(-5deg); }
+}
+.animate-float-slow { animation: float-slow 20s infinite ease-in-out; }
+.animate-float-reverse { animation: float-reverse 18s infinite ease-in-out; }
+
+/* Enable 3D transform preservation */
+[transform-style\:preserve-3d] {
+  transform-style: preserve-3d;
+}
+
+.group-hover{
+  transform: perspective(1000px) rotateX(4deg) rotateY(-4deg);
+}
+
+/* Presidential hover scale for calendar days */
+.rdp-day:hover {
+  transform: scale(1.1) !important;
+  z-index: 10;
+}
+
+/* Smooth transitions */
+.rdp-day {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}

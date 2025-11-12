@@ -7,36 +7,50 @@ import { news } from '@/constants/sportsData';
 
 export default function SportsPage() {
     return (
-        <div className="container mx-auto px-4 py-12">
-            <div className="text-center mb-12">
-                <h1 className="text-4xl md:text-5xl font-bold mb-4">Sports & Opportunities</h1>
-                <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                    Find tournaments, training programs, and stay updated with youth sports news across Nigeria.
-                </p>
-            </div>
+        <div className="min-h-screen bg-[#F8FAFC]">
+            <div className="container mx-auto px-5 md:px-8 py-16 md:py-24 max-w-7xl">
+                {/* Hero Header */}
+                <div className="text-center mb-16">
+                    <h1 className="text-5xl md:text-6xl font-bold text-[#1E293B] leading-tight">
+            <span className="relative inline-block text-6xl md:text-7xl ">
+              <span className="absolute -translate-x-1 -translate-y-1 text-[#E2E8F0] select-none opacity-70">
+                Sports & Opportunities
+              </span>
+              <span className="relative">Sports & Opportunities</span>
+            </span>
+                    </h1>
+                    <p className="mt-6 text-xl md:text-2xl text-[#475569] max-w-4xl mx-auto leading-relaxed font-light">
+                        Tournaments • Training Camps • National Trials • Youth Sports News Across Nigeria
+                    </p>
+                </div>
 
-            <FilterBar />
+                <FilterBar />
 
-            <div className="space-y-12">
-                {/* Events Section */}
-                <section>
-                    <h2 className="text-2xl font-bold mb-6">Upcoming Events</h2>
-                    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                        {events.map((event) => (
-                            <EventCard key={event._id} event={event} />
-                        ))}
-                    </div>
-                </section>
+                <div className="space-y-24">
+                    {/* Events */}
+                    <section>
+                        <h2 className="text-4xl font-bold text-[#1E293B] mb-12">
+                            Upcoming Events
+                        </h2>
+                        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3">
+                            {events.map((event) => (
+                                <EventCard key={event._id} event={event} />
+                            ))}
+                        </div>
+                    </section>
 
-                {/* News Section */}
-                <section>
-                    <h2 className="text-2xl font-bold mb-6">Latest News</h2>
-                    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                        {news.map((item) => (
-                            <NewsCard key={item._id} news={item} />
-                        ))}
-                    </div>
-                </section>
+                    {/* News */}
+                    <section>
+                        <h2 className="text-4xl font-bold text-[#1E293B] mb-12">
+                            Latest News
+                        </h2>
+                        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3">
+                            {news.map((item) => (
+                                <NewsCard key={item._id} news={item} />
+                            ))}
+                        </div>
+                    </section>
+                </div>
             </div>
         </div>
     );

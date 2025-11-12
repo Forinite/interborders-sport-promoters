@@ -5,64 +5,63 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-// import { useToast } from '@/components/ui/use-toast';
+import { Send, CheckCircle2 } from 'lucide-react';
 
 export default function ContactForm() {
     const [isSubmitting, setIsSubmitting] = useState(false);
-    // const { toast } = useToast();
+    const [isSent, setIsSent] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsSubmitting(true);
-
-        // Simulate API call
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-
-        // toast({
-        //     title: 'Message Sent!',
-        //     description: 'We\'ll get back to you within 24 hours.',
-        // });
-
+        await new Promise(res => setTimeout(res, 1200));
         setIsSubmitting(false);
+        setIsSent(true);
+        setTimeout(() => setIsSent(false), 4000);
     };
 
     return (
         <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-                <label htmlFor="name" className="block text-sm font-medium mb-2">
-                    Full Name
-                </label>
-                <Input id="name" placeholder="John Doe" required />
-            </div>
-
-            <div>
-                <label htmlFor="email" className="block text-sm font-medium mb-2">
-                    Email Address
-                </label>
-                <Input id="email" type="email" placeholder="john@example.com" required />
-            </div>
-
-            <div>
-                <label htmlFor="subject" className="block text-sm font-medium mb-2">
-                    Subject
-                </label>
-                <Input id="subject" placeholder="Partnership Inquiry" required />
-            </div>
-
-            <div>
-                <label htmlFor="message" className="block text-sm font-medium mb-2">
-                    Message
-                </label>
-                <Textarea
-                    id="message"
-                    placeholder="Tell us how we can help..."
-                    rows={6}
-                    required
-                />
-            </div>
-
-            <Button type="submit" className="w-full bg-green-600 hover:bg-green-700" disabled={isSubmitting}>
-                {isSubmitting ? 'Sending...' : 'Send Message'}
+            <Input
+                placeholder="Full Name"
+                required
+                className="h-12 text-base border-slate-300 focus:border-[#0A84FF] focus:ring-2 focus:ring-[#0A84FF]/20"
+            />
+            <Input
+                type="email"
+                placeholder="Email Address"
+                required
+                className="h-12 text-base border-slate-300 focus:border-[#0A84FF] focus:ring-2 focus:ring-[#0A84FF]/20"
+            />
+            <Input
+                placeholder="Subject"
+                required
+                className="h-12 text-base border-slate-300 focus:border-[#0A84FF] focus:ring-2 focus:ring-[#0A84FF]/20"
+            />
+            <Textarea
+                placeholder="Your message..."
+                rows={5}
+                required
+                className="text-base border-slate-300 focus:border-[#0A84FF] focus:ring-2 focus:ring-[#0A84FF]/20 resize-none"
+            />
+            <Button
+                type="submit"
+                disabled={isSubmitting || isSent}
+                className={`w-full h-14 text-base font-semibold rounded-lg shadow-md transition-all ${
+                    isSent
+                        ? 'bg-emerald-600 hover:bg-emerald-700'
+                        : 'bg-gradient-to-r from-[#0A84FF] to-[#0052CC] hover:shadow-lg'
+                }`}
+            >
+                {isSubmitting ? 'Sending...' : isSent ? (
+                    <>
+                        <CheckCircle2 className="mr-2 h-5 w-5" /> Sent Successfully!
+                    </>
+                ) : (
+                    <>
+                        <Send className="mr-2 h-5 w-5" /> Send Message
+                    </>
+                )}
             </Button>
         </form>
     );

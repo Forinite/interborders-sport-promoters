@@ -165,9 +165,14 @@ export default function StoriesList({ stories }: StoriesListProps) {
             </div>
 
             {stories.length === 0 && (
-                <div className="text-center py-12">
-                    <p className="text-muted-foreground">No stories yet. Create your first one!</p>
+                <div>
+                    <div className="text-center py-12">
+                        <p className="text-muted-foreground">No stories yet. Create your first one!</p>
+                    </div>
+
+
                 </div>
+
             )}
         </div>
     );

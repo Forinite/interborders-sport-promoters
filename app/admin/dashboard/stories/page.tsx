@@ -37,14 +37,14 @@ export default function StoriesPage() {
         );
     }
 
-    if (!stories?.length) {
-        return (
-            <div className="text-center p-8">
-                <p className="text-lg text-muted-foreground">No stories found.</p>
-                <p className="text-sm mt-2">Create your first story to get started!</p>
-            </div>
-        );
-    }
+    // if (!stories?.length) {
+    //     return (
+    //         <div className="text-center p-8">
+    //             <p className="text-lg text-muted-foreground">No stories found.</p>
+    //             <p className="text-sm mt-2">Create your first story to get started!</p>
+    //         </div>
+    //     );
+    // }
 
     return <StoriesList stories={stories} />;
 }
