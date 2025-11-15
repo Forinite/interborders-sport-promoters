@@ -1,5 +1,4 @@
 // sanity/schemas/resource.ts
-
 import { defineType, defineField } from 'sanity';
 
 export const resource = defineType({
@@ -40,9 +39,10 @@ export const resource = defineType({
             validation: (Rule) => Rule.required(),
         }),
         defineField({
-            name: 'fileUrl',
-            title: 'PDF File URL',
-            type: 'url',
+            name: 'file',
+            title: 'PDF File',
+            type: 'file',
+            options: { accept: '.pdf' },
             hidden: ({ parent }) => parent?.format !== 'pdf',
         }),
         defineField({

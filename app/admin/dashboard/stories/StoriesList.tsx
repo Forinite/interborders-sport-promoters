@@ -1,179 +1,267 @@
 // app/admin/dashboard/stories/StoriesList.tsx
-'use client';
+// app/admin/dashboard/stories/StoriesList.tsx
+"use client";
 
-import { useModal } from '../Modals/ModalContext';
-import { Button } from '@/components/ui/button';
-import { Plus, Edit, Trash2, Calendar, User, Tag, Image as ImageIcon } from 'lucide-react';
-import { Story } from '@/types';
-import Image from 'next/image';
-import { urlFor } from '@/sanity/lib/image';
+import { useModal } from "../Modals/ModalContext";
+import { Button } from "@/components/ui/button";
+import { Plus, Edit, Trash2, Star } from "lucide-react";
+import Image from "next/image";
+import { urlFor } from "@/sanity/lib/image";
+import { format } from "date-fns";
 
-interface StoriesListProps {
-    stories: Story[];
-}
-
-export default function StoriesList({ stories }: StoriesListProps) {
+export default function StoriesList({ stories }: { stories: any[] }) {
     const { openModal } = useModal();
 
     return (
-        <div className="bg-white rounded-lg shadow-sm border">
-            <div className="p-6 border-b flex justify-between items-center">
-                <h2 className="text-xl font-semibold">Success Stories</h2>
+        <div className="space-y-6">
+            {/* Header */}
+            <div className="flex justify-between items-center">
+                <div>
+                    <h1 className="text-xl font-bold text-slate-900">Success Stories</h1>
+                    <p className="text-xs text-slate-600 mt-0.5">
+                        {stories.length} total • {stories.filter(s => s.featured).length} featured
+                    </p>
+                </div>
+
                 <Button
                     size="sm"
-                    onClick={() => openModal({ type: 'addStory' })}
-                    className="bg-green-600 hover:bg-green-700"
+                    onClick={() => openModal({ type: "addStory" })}
+                    className="bg-gradient-to-r from-[#0A84FF] to-[#0052CC] text-white rounded-lg"
                 >
                     <Plus className="h-4 w-4 mr-2" />
                     Add Story
                 </Button>
             </div>
 
-            <div className="overflow-x-auto">
-                <table className="w-full">
-                    <thead className="bg-gray-50 border-b">
+            {/* Desktop Table */}
+            <div className="hidden md:block bg-white border border-slate-200 rounded-xl overflow-hidden">
+                <table className="w-full text-sm">
+                    <thead className="bg-slate-50 border-b border-slate-200">
                     <tr>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Story
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Author & Date
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Tags
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Actions
-                        </th>
+                        <th className="px-4 py-3 text-left font-semibold text-slate-700">Title</th>
+                        <th className="px-4 py-3 text-left font-semibold text-slate-700">Author</th>
+                        <th className="px-4 py-3 text-left font-semibold text-slate-700">Date</th>
+                        <th className="px-4 py-3 text-left font-semibold text-slate-700">Tags</th>
+                        <th className="px-4 py-3 text-left font-semibold text-slate-700">Status</th>
+                        <th className="px-4 py-3 text-right font-semibold text-slate-700">Actions</th>
                     </tr>
                     </thead>
-                    <tbody className="divide-y divide-gray-200">
-                    {stories.map((story) => {
-                        const imageUrl = story.image?.asset ? urlFor(story.image).width(80).height(80).url() : null;
 
-                        return (
-                            <tr key={story._id} className="hover:bg-gray-50 transition-colors">
-                                {/* Story Preview */}
-                                <td className="px-6 py-4">
-                                    <div className="flex items-start gap-3">
-                                        {imageUrl ? (
-                                            <div className="relative h-16 w-16 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
+                    <tbody className="divide-y divide-slate-100">
+                    {stories.length === 0 ? (
+                        <tr>
+                            <td colSpan={6} className="text-center py-12 text-slate-500">
+                                No stories found.
+                            </td>
+                        </tr>
+                    ) : (
+                        stories.map((story) => {
+                            const img = story.image?.asset
+                                ? urlFor(story.image).width(60).height(60).url()
+                                : null;
+
+                            return (
+                                <tr key={story._id} className="hover:bg-slate-50 transition-colors">
+                                    <td className="px-4 py-4">
+                                        <div className="flex items-center gap-3">
+                                            {img ? (
                                                 <Image
-                                                    src={imageUrl}
-                                                    alt={story.image?.alt || story.title}
-                                                    fill
-                                                    className="object-cover"
+                                                    src={img}
+                                                    width={40}
+                                                    height={40}
+                                                    className="object-cover rounded-lg border"
+                                                    alt=""
                                                 />
-                                            </div>
-                                        ) : (
-                                            <div className="h-16 w-16 rounded-lg bg-gray-100 border-2 border-dashed border-gray-300 flex items-center justify-center flex-shrink-0">
-                                                <ImageIcon className="h-6 w-6 text-gray-400" />
-                                            </div>
-                                        )}
-                                        <div className="flex-1 min-w-0">
-                                            <p className="text-sm font-medium text-foreground truncate">{story.title}</p>
-                                            {story.excerpt && (
-                                                <p className="text-xs text-muted-foreground mt-1 line-clamp-2">
-                                                    {story.excerpt}
+                                            ) : (
+                                                <div className="w-10 h-10 bg-slate-100 rounded-lg border" />
+                                            )}
+                                            <div>
+                                                <p className="font-medium text-slate-900 truncate max-w-52">
+                                                    {story.title}
                                                 </p>
-                                            )}
-                                            {story.featured && (
-                                                <span className="inline-block mt-1 px-2 py-0.5 text-xs font-medium bg-yellow-100 text-yellow-800 rounded-full">
-                            Featured
-                          </span>
-                                            )}
+                                                {story.excerpt && (
+                                                    <p className="text-xs text-slate-500 line-clamp-1">
+                                                        {story.excerpt}
+                                                    </p>
+                                                )}
+                                            </div>
                                         </div>
-                                    </div>
-                                </td>
+                                    </td>
 
-                                {/* Author & Date */}
-                                <td className="px-6 py-4 text-sm">
-                                    <div className="space-y-1">
-                                        {story.author ? (
-                                            <div className="flex items-center gap-1 text-muted-foreground">
-                                                <User className="h-3.5 w-3.5" />
-                                                <span>{story.author}</span>
+                                    <td className="px-4 py-4 text-slate-600">{story.author || "—"}</td>
+
+                                    <td className="px-4 py-4 text-slate-600 text-xs">
+                                        {story.publishedAt
+                                            ? format(new Date(story.publishedAt), "dd MMM yyyy")
+                                            : "—"}
+                                    </td>
+
+                                    <td className="px-4 py-4">
+                                        {story.tags?.length ? (
+                                            <div className="flex flex-wrap gap-1">
+                                                {story.tags.slice(0, 3).map((tag: string) => (
+                                                    <span
+                                                        key={tag}
+                                                        className="px-2 py-0.5 bg-[#0A84FF]/10 text-[#0A84FF] text-xs rounded-md"
+                                                    >
+                                                            {tag}
+                                                        </span>
+                                                ))}
                                             </div>
                                         ) : (
-                                            <span className="text-muted-foreground italic">No author</span>
+                                            <span className="text-xs text-slate-400">—</span>
                                         )}
-                                        <div className="flex items-center gap-1 text-muted-foreground">
-                                            <Calendar className="h-3.5 w-3.5" />
-                                            <span>
-                          {story.publishedAt
-                              ? new Date(story.publishedAt).toLocaleDateString('en-GB', {
-                                  day: 'numeric',
-                                  month: 'short',
-                                  year: 'numeric',
-                              })
-                              : '—'}
-                        </span>
-                                        </div>
-                                    </div>
-                                </td>
+                                    </td>
 
-                                {/* Tags */}
-                                <td className="px-6 py-4">
-                                    {story.tags && story.tags.length > 0 ? (
-                                        <div className="flex flex-wrap gap-1">
-                                            {story.tags.slice(0, 3).map((tag, i) => (
-                                                <span
-                                                    key={i}
-                                                    className="inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium bg-green-100 text-green-800 rounded-full"
-                                                >
-                            <Tag className="h-3 w-3" />
-                                                    {tag}
-                          </span>
-                                            ))}
-                                            {story.tags.length > 3 && (
-                                                <span className="text-xs text-muted-foreground">
-                            +{story.tags.length - 3}
-                          </span>
-                                            )}
-                                        </div>
-                                    ) : (
-                                        <span className="text-xs text-muted-foreground">No tags</span>
-                                    )}
-                                </td>
+                                    <td className="px-4 py-4">
+                                        {story.featured ? (
+                                            <span className="inline-flex items-center gap-1 px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-md">
+                                                    <Star className="h-3 w-3" />
+                                                    Featured
+                                                </span>
+                                        ) : (
+                                            <span className="text-xs text-slate-500">Draft</span>
+                                        )}
+                                    </td>
 
-                                {/* Actions */}
-                                <td className="px-6 py-4">
-                                    <div className="flex items-center gap-2">
-                                        <Button
-                                            size="sm"
-                                            variant="ghost"
-                                            onClick={() => openModal({ type: 'editStory', data: story })}
-                                            className="hover:text-green-600"
-                                        >
-                                            <Edit className="h-4 w-4" />
-                                        </Button>
-                                        <Button
-                                            size="sm"
-                                            variant="ghost"
-                                            onClick={() => openModal({ type: 'deleteStory', data: story })}
-                                            className="hover:text-red-600"
-                                        >
-                                            <Trash2 className="h-4 w-4" />
-                                        </Button>
-                                    </div>
-                                </td>
-                            </tr>
-                        );
-                    })}
+                                    <td className="px-4 py-4">
+                                        <div className="flex justify-end gap-2">
+                                            <Button
+                                                size="sm"
+                                                variant="ghost"
+                                                onClick={() =>
+                                                    openModal({ type: "editStory", data: story })
+                                                }
+                                                className="h-8 w-8 p-0"
+                                            >
+                                                <Edit className="h-4 w-4 text-slate-700" />
+                                            </Button>
+
+                                            <Button
+                                                size="sm"
+                                                variant="ghost"
+                                                onClick={() =>
+                                                    openModal({ type: "deleteStory", data: story })
+                                                }
+                                                className="h-8 w-8 p-0 hover:bg-red-50"
+                                            >
+                                                <Trash2 className="h-4 w-4 text-red-600" />
+                                            </Button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            );
+                        })
+                    )}
                     </tbody>
                 </table>
             </div>
 
-            {stories.length === 0 && (
-                <div>
-                    <div className="text-center py-12">
-                        <p className="text-muted-foreground">No stories yet. Create your first one!</p>
-                    </div>
+            {/* MOBILE CARDS */}
+            <div className="md:hidden space-y-4">
+                {stories.length === 0 ? (
+                    <p className="text-center text-slate-500 py-10">No stories found.</p>
+                ) : (
+                    stories.map((story) => {
+                        const img = story.image?.asset
+                            ? urlFor(story.image).width(300).height(200).url()
+                            : null;
 
+                        const isFeatured = story.featured;
 
-                </div>
+                        return (
+                            <div
+                                key={story._id}
+                                className={`relative bg-white border rounded-xl p-4 space-y-3 ${
+                                    isFeatured
+                                        ? "border-yellow-400 shadow-[0_0_12px_rgba(251,191,36,0.3)]"
+                                        : "border-slate-200"
+                                }`}
+                            >
+                                {/* FEATURED BADGE */}
+                                {isFeatured && (
+                                    <div className="absolute top-2 left-2 z-10 flex items-center gap-1 bg-yellow-400 text-yellow-900 px-2 py-0.5 rounded-md text-[10px] font-medium shadow">
+                                        <Star className="h-3 w-3" />
+                                        Featured
+                                    </div>
+                                )}
 
-            )}
+                                {/* IMAGE */}
+                                {img && (
+                                    <div className="w-full h-40 relative rounded-lg overflow-hidden">
+                                        <Image
+                                            src={img}
+                                            alt=""
+                                            fill
+                                            className="object-cover"
+                                        />
+                                    </div>
+                                )}
+
+                                {/* TITLE */}
+                                <div>
+                                    <h2 className="font-medium text-slate-900 text-sm">
+                                        {story.title}
+                                    </h2>
+                                    <p className="text-xs text-slate-500 mt-1 line-clamp-2">
+                                        {story.excerpt}
+                                    </p>
+                                </div>
+
+                                {/* META */}
+                                <div className="flex items-center justify-between text-xs text-slate-500">
+                                    <span>{story.author || "Unknown"}</span>
+                                    <span>
+                            {story.publishedAt
+                                ? format(new Date(story.publishedAt), "dd MMM yyyy")
+                                : "—"}
+                        </span>
+                                </div>
+
+                                {/* TAGS */}
+                                {story.tags?.length > 0 && (
+                                    <div className="flex flex-wrap gap-1 mt-2">
+                                        {story.tags.slice(0, 3).map((tag: string) => (
+                                            <span
+                                                key={tag}
+                                                className="px-2 py-0.5 bg-[#0A84FF]/10 text-[#0A84FF] text-[10px] rounded-md"
+                                            >
+                                    {tag}
+                                </span>
+                                        ))}
+                                    </div>
+                                )}
+
+                                {/* ACTIONS */}
+                                <div className="flex justify-end gap-3 pt-2">
+                                    <Button
+                                        size="sm"
+                                        variant="ghost"
+                                        onClick={() =>
+                                            openModal({ type: "editStory", data: story })
+                                        }
+                                        className="h-8 w-8 p-0"
+                                    >
+                                        <Edit className="h-4 w-4 text-slate-700" />
+                                    </Button>
+
+                                    <Button
+                                        size="sm"
+                                        variant="ghost"
+                                        onClick={() =>
+                                            openModal({ type: "deleteStory", data: story })
+                                        }
+                                        className="h-8 w-8 p-0 hover:bg-red-50"
+                                    >
+                                        <Trash2 className="h-4 w-4 text-red-600" />
+                                    </Button>
+                                </div>
+                            </div>
+                        );
+                    })
+                )}
+            </div>
+
         </div>
     );
 }

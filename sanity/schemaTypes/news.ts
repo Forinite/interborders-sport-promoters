@@ -1,6 +1,5 @@
 // sanity/schemas/news.ts
 
-// sanity/schemas/news.ts
 import { defineType, defineField } from 'sanity';
 
 export const news = defineType({

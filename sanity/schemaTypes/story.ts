@@ -1,6 +1,5 @@
 // sanity/schemasType/story.ts
 
-// sanity/schemas/story.ts
 import { defineType, defineField } from 'sanity';
 
 export const story = defineType({

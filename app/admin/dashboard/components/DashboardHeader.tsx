@@ -1,48 +1,82 @@
 // app/admin/dashboard/components/DashboardHeader.tsx
+// app/admin/dashboard/components/DashboardHeader.tsx
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { Menu, Bell, Search } from 'lucide-react';
+import { Menu, Bell, Search, Globe, ChevronDown } from 'lucide-react';
+import { useState } from 'react';
 
 interface DashboardHeaderProps {
     onMenuClick: () => void;
 }
 
 export default function DashboardHeader({ onMenuClick }: DashboardHeaderProps) {
+    const [searchOpen, setSearchOpen] = useState(false);
+
     return (
-        <header className="bg-white border-b px-6 py-4">
+        <header className="bg-white border-b border-slate-200 px-6 py-4">
             <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-4">
+
+                {/* Left: Menu + Search */}
+                <div className="flex items-center gap-4">
                     <Button
                         variant="ghost"
                         size="icon"
                         onClick={onMenuClick}
                         className="lg:hidden"
                     >
-                        <Menu className="h-5 w-5" />
+                        <Menu className="h-5 w-5 text-slate-600" />
                     </Button>
-                    <div className="relative hidden md:block">
-                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                        <input
-                            type="text"
-                            placeholder="Search content..."
-                            className="pl-10 pr-4 py-2 border rounded-lg text-sm w-64 focus:outline-none focus:ring-2 focus:ring-green-500"
-                        />
+
+                    {/* Global Search */}
+                    <div className="relative">
+                        {searchOpen ? (
+                            <div className="flex items-center gap-2 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 w-80 transition-all">
+                                <Search className="h-4 w-4 text-slate-500" />
+                                <input
+                                    type="text"
+                                    placeholder="Search stories, events, users..."
+                                    className="bg-transparent outline-none flex-1 text-sm"
+                                    autoFocus
+                                    onBlur={() => setSearchOpen(false)}
+                                />
+                            </div>
+                        ) : (
+                            <button
+                                onClick={() => setSearchOpen(true)}
+                                className="hidden md:flex items-center gap-3 px-5 py-2.5 bg-slate-50 hover:bg-slate-100 rounded-xl transition-colors"
+                            >
+                                <Search className="h-4 w-4 text-slate-500" />
+                                <span className="text-sm text-slate-500">Search...</span>
+                                <kbd className="ml-auto text-xs text-slate-400 bg-slate-200 px-1.5 py-0.5 rounded">⌘K</kbd>
+                            </button>
+                        )}
                     </div>
                 </div>
 
-                <div className="flex items-center space-x-4">
+                {/* Right: Notifications + User */}
+                <div className="flex items-center gap-4">
+                    {/* Language */}
+                    <button className="hidden sm:flex items-center gap-2 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 rounded-xl transition-colors">
+                        <Globe className="h-4 w-4" />
+                        <span>EN</span>
+                        <ChevronDown className="h-3 w-3" />
+                    </button>
+
+                    {/* Notifications */}
                     <Button variant="ghost" size="icon" className="relative">
-                        <Bell className="h-5 w-5" />
-                        <span className="absolute top-1 right-1 h-2 w-2 bg-red-500 rounded-full"></span>
+                        <Bell className="h-5 w-5 text-slate-600" />
+                        <span className="absolute top-1.5 right-1.5 h-2 w-2 bg-red-500 rounded-full animate-pulse"></span>
                     </Button>
-                    <div className="flex items-center space-x-3">
-                        <div className="h-8 w-8 rounded-full bg-green-600 flex items-center justify-center text-white text-sm font-medium">
+
+                    {/* User */}
+                    <div className="flex items-center gap-3">
+                        <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#0A84FF] to-[#0052CC] flex items-center justify-center text-white font-black text-sm shadow-md">
                             A
                         </div>
-                        <div className="hidden md:block">
-                            <p className="text-sm font-medium">Admin User</p>
-                            <p className="text-xs text-muted-foreground">admin@youthsportng.org</p>
+                        <div className="hidden lg:block">
+                            <p className="text-sm font-semibold text-slate-900">Admin</p>
+                            <p className="text-xs text-slate-500">admin@interboarder.org</p>
                         </div>
                     </div>
                 </div>
