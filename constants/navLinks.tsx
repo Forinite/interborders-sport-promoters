@@ -6,4 +6,5 @@ export const navLinks = [
     { name: 'Counselling', href: '/counselling' },
     { name: 'About', href: '/about' },
     { name: 'Contact', href: '/contact' },
+    { name: 'Login', href: '/admin/dashboard' },
 ];

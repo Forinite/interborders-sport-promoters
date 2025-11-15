@@ -1,11 +1,17 @@
 // app/(components)/sports/components/EventCard.tsx
-
+// app/(components)/sports/components/EventCard.tsx
 import Image from 'next/image';
 import Link from 'next/link';
 import { Calendar, MapPin, Users, BadgeDollarSign, ArrowRight } from 'lucide-react';
-import {FootballerImage} from "@/constants/images";
+import { FootballerImage } from "@/constants/images";
+import {Event} from "@/types";
 
-export default function EventCard({ event }: { event: any }) {
+
+
+export default function EventCard({ event }: { event: Event }) {
+    const imageUrl = event.image?.asset?.url || FootballerImage;
+    const imageAlt = event.image?.alt || event.title;
+
     return (
         <Link href={`/sports/${event.slug.current}`} className="block group focus:outline-none">
             <div className="relative h-full min-h-[520px] transition-all duration-500
@@ -20,15 +26,16 @@ export default function EventCard({ event }: { event: any }) {
                 <div className="relative bg-white rounded-2xl border-2 border-[#CBD5E1] shadow-lg h-full flex flex-col overflow-hidden">
                     <div className="relative aspect-video">
                         <Image
-                            src={FootballerImage}
-                            alt={event.title}
+                            src={imageUrl}
+                            alt={imageAlt}
                             fill
                             className="object-cover transition-transform duration-700 group-hover:scale-105"
                             sizes="(max-width: 768px) 100vw, 33vw"
+                            priority={false}
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
 
-                        {event.spotsLeft < 20 && (
+                        {event.spotsLeft != null && event.spotsLeft < 20 && (
                             <div className="absolute top-4 right-4 bg-red-600 text-white px-5 py-2 rounded-full font-bold text-sm shadow-lg">
                                 {event.spotsLeft} SPOTS LEFT
                             </div>

@@ -1,10 +1,15 @@
 // components/ui/StoryCard.tsx
-// components/ui/StoryCard.tsx
 import Image from 'next/image';
 import Link from 'next/link';
 import { placeholderImage } from '@/constants/images';
+import {Story} from "@/types";
 
-export default function StoryCard({ story }: { story: any }) {
+
+
+export default function StoryCard({ story }: { story: Story }) {
+    // Use Sanity image URL if exists, else fallback
+    const imageUrl = story.image?.asset?.url || placeholderImage;
+
     return (
         <Link
             href={`/stories/${story.slug.current}`}
@@ -28,10 +33,12 @@ export default function StoryCard({ story }: { story: any }) {
                     {/* Image */}
                     <div className="relative h-64 overflow-hidden bg-[#F8FAFC]">
                         <Image
-                            src={story.image?.asset?._ref ? placeholderImage : `/images/stories/${story._id}.jpg`}
+                            src={imageUrl}
                             alt={story.title}
                             fill
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                             className="object-cover transition-transform duration-700 group-hover:scale-105"
+                            priority={false}
                         />
                         {/* Subtle overlay */}
                         <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
@@ -49,7 +56,7 @@ export default function StoryCard({ story }: { story: any }) {
                                 {story.title}
                             </h3>
                             <p className="text-[#475569] text-base leading-relaxed line-clamp-3">
-                                {story.excerpt}
+                                {story.excerpt || 'No excerpt available.'}
                             </p>
                         </div>
 
@@ -57,7 +64,7 @@ export default function StoryCard({ story }: { story: any }) {
                         <div className="mt-6 pt-4 border-t border-[#E2E8F0] flex items-center justify-between text-sm">
                             <span className="text-[#64748B]">Featured Athlete</span>
                             <span className="font-semibold text-[#0A84FF] group-hover:text-[#0052CC] transition-colors">
-                Read Full Story →
+                Read Full Story
               </span>
                         </div>
                     </div>

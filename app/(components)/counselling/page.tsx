@@ -1,12 +1,24 @@
 // app/(components)/counselling/page.tsx
-'use client';
-
 import ResourceGrid from './components/ResourceGrid';
 import BookingPanel from './components/BookingPanel';
 import ContactBand from './components/ContactBand';
-import { resources } from '@/constants/counsellingData';
+import { RESOURCES_QUERY } from '@/lib/queries';
+import type { Resource } from '@/types';
+import {client} from "@/sanity/lib/client";
 
-export default function CounsellingPage() {
+async function fetchResources(): Promise<Resource[]> {
+    try {
+        const resources = await client.fetch<Resource[]>(RESOURCES_QUERY, {}, { next: { revalidate: 60 } });
+        return resources;
+    } catch (error) {
+        console.error('Sanity resources fetch error:', error);
+        return [];
+    }
+}
+
+export default async function CounsellingPage() {
+    const resources = await fetchResources();
+
     return (
         <div className="min-h-screen bg-[#F8FAFC]">
             <div className="container mx-auto px-5 md:px-8 py-16 md:py-24 max-w-7xl">

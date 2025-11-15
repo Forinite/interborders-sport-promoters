@@ -6,17 +6,21 @@ export type Story = {
     _id: string;
     title: string;
     slug: { current: string };
-    excerpt: string;
-    body: any[]; // Portable Text
-    image?: {
-        asset: { _ref: string; _type: string };
-        alt?: string;
-    };
+    excerpt?: string;
     author?: string;
     publishedAt: string;
-    tags: string[];
+    image?: {
+        asset?: {
+            _id: string;
+            url: string;
+        };
+    };
+    tags?: string[];
+    body: any[];
     featured?: boolean;
-};
+}
+
+
 
 export type Event = {
     _id: string;
@@ -28,7 +32,10 @@ export type Event = {
     sport: string;
     description: string;
     image?: {
-        asset: { _ref: string; _type: string };
+        asset?: {
+            _id: string;
+            url: string;
+        };
         alt?: string;
     };
     registrationLink?: string;
@@ -36,7 +43,8 @@ export type Event = {
     ageGroup: string;
     spotsLeft?: number;
     publishedAt: string;
-};
+}
+
 
 export type News = {
     _id: string;
@@ -45,7 +53,10 @@ export type News = {
     excerpt: string;
     body: any[];
     image?: {
-        asset: { _ref: string; _type: string };
+        asset?: {
+            _id: string;
+            url: string;
+        };
         alt?: string;
     };
     author?: string;
@@ -62,12 +73,15 @@ export type Resource = {
     videoUrl?: string;
     body?: any[];
     image?: {
-        asset: { _ref: string; _type: string };
+        asset?: {
+            _id: string;
+            url: string;
+        };
         alt?: string;
     };
     tags: string[];
     publishedAt: string;
-};
+}
 
 export type TeamMember = {
     name: string;

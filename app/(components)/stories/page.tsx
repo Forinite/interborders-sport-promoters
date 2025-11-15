@@ -1,13 +1,28 @@
 // app/(components)/stories/page.tsx
-
-// app/(components)/stories/page.tsx
 import StoryGrid from './components/StoryGrid';
-import { stories } from '@/constants/storiesData';
-import { featuredStories } from '@/constants/homeData';
-import StoryCard from "@/components/ui/StoryCard";
+import { STORIES_QUERY } from '@/lib/queries';
+import {client} from "@/sanity/lib/client";
+import {Story} from "@/types";
 
-export default function StoriesPage() {
-    const allStories = [...featuredStories, ...stories];
+
+async function fetchStories(): Promise<Story[]> {
+    try {
+        const stories = await client.fetch<Story[]>(STORIES_QUERY, {}, {
+            next: { revalidate: 60 } // ISR: 60 seconds
+        });
+        return stories;
+    } catch (error) {
+        console.error('Sanity fetch error:', error);
+        return [];
+    }
+}
+
+export default async function StoriesPage() {
+    const stories = await fetchStories();
+
+    const featuredStories = stories.filter(s => s.featured);
+    const regularStories = stories.filter(s => !s.featured);
+    const allStories = [...featuredStories, ...regularStories];
 
     return (
         <div className="min-h-screen bg-[#F8FAFC]">
@@ -17,8 +32,7 @@ export default function StoriesPage() {
                 <div className="text-center mb-20">
                     <h1 className="text-5xl md:text-7xl font-black text-[#1E293B] leading-tight">
             <span className="relative inline-block">
-              {/* Deep Etched Shadow */}
-                <span className="absolute -translate-x-1.5 -translate-y-1.5 text-[#E2E8F0] select-none opacity-70">
+              <span className="absolute -translate-x-1.5 -translate-y-1.5 text-[#E2E8F0] select-none opacity-70">
                 SUCCESS STORIES
               </span>
               <span className="relative">SUCCESS STORIES</span>
@@ -39,7 +53,6 @@ export default function StoriesPage() {
             </span>
                     </div>
                 </div>
-
 
                 {/* Rest of the Grid */}
                 <StoryGrid stories={allStories.slice(1)} />

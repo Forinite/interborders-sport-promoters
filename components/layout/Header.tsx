@@ -20,16 +20,6 @@ export default function Header() {
 
     return (
         <>
-            {/* Announcement Bar */}
-        {/*    <div className="bg-gradient-to-r from-[#0A84FF] to-[#0052CC] text-white py-2 px-4 text-center text-sm font-medium">*/}
-        {/*<span className="inline-flex items-center gap-2">*/}
-        {/*  <Globe className="h-4 w-4 animate-pulse" />*/}
-        {/*  Now in <span className="font-bold">47 countries</span> • Empowering 250,000+ youth*/}
-        {/*  <ArrowRight className="h-4 w-4 ml-1" />*/}
-        {/*</span>*/}
-        {/*    </div>*/}
-
-            {/* Header */}
             <header
                 className={`sticky top-0 z-50 transition-all duration-500 ${
                     scrolled
