@@ -77,3 +77,14 @@ export const RESOURCES_QUERY = `*[_type == "resource"] | order(publishedAt desc)
   tags,
   publishedAt
 }`;
+
+
+// lib/queries.ts
+export const ADMINS_QUERY = `
+  *[_type == "adminAccount"] | order(_createdAt desc) {
+    _id,
+    name,
+    email
+  }
+`;
+

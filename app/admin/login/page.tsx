@@ -1,14 +1,20 @@
 // app/admin/login/page.tsx
+
+
+// app/admin/login/page.tsx
 'use client';
 
 import { signIn } from 'next-auth/react';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { AlertCircle } from 'lucide-react';
 
 export default function AdminLoginPage() {
+    const router = useRouter();
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -22,16 +28,18 @@ export default function AdminLoginPage() {
         const res = await signIn('credentials', {
             email,
             password,
-            redirect: false,
+            redirect: false, // we handle redirect manually
         });
 
-        if (res?.error) {
+        if (!res || res.error) {
             setError('Invalid email or password');
-        } else {
-            window.location.href = '/admin/dashboard';
+            setLoading(false);
+            return;
         }
 
-        setLoading(false);
+        // ⭐ Instant redirect using Next.js router
+        router.push('/admin/dashboard');
+        router.refresh();
     };
 
     return (
@@ -42,7 +50,7 @@ export default function AdminLoginPage() {
                         <div className="h-12 w-12 rounded-full bg-green-600 mx-auto mb-4" />
                         <h1 className="text-2xl font-bold">Admin Login</h1>
                         <p className="text-sm text-muted-foreground mt-1">
-                            Use the default credentials to sign in
+                            Enter your admin credentials to continue
                         </p>
                     </div>
 
@@ -67,7 +75,7 @@ export default function AdminLoginPage() {
                                 type="password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
-                                placeholder="admin123"
+                                placeholder="Your password"
                                 required
                                 disabled={loading}
                             />
@@ -82,22 +90,12 @@ export default function AdminLoginPage() {
 
                         <Button
                             type="submit"
-                            className="w-full bg-green-600 hover:bg-green-700"
+                            className="w-full bg-green-600 hover:bg-green-700 disabled:opacity-60"
                             disabled={loading}
                         >
                             {loading ? 'Signing in...' : 'Sign In'}
                         </Button>
                     </form>
-
-                    <div className="mt-6 p-4 bg-blue-50 rounded-lg text-sm">
-                        <p className="font-medium text-blue-900">Default Credentials</p>
-                        <p className="text-blue-700">
-                            Email: <code className="font-mono">admin@youthsportng.org</code>
-                        </p>
-                        <p className="text-blue-700">
-                            Password: <code className="font-mono">admin123</code>
-                        </p>
-                    </div>
                 </div>
             </div>
         </div>

@@ -1,41 +1,51 @@
 // app/(components)/contact/components/ContactInfo.tsx
-import { contactInfo } from '@/constants/counsellingData';
-import { Phone, Mail, MapPin, Clock, Globe, Headphones } from 'lucide-react';
 
-export default function ContactInfo() {
+import { Phone, Mail, MapPin, Clock, Globe, Headphones } from 'lucide-react';
+import { client } from '@/sanity/lib/client';
+
+export default async function ContactInfo() {
+    // Fetch dynamic contact info from Sanity
+    let contactInfo;
+    try {
+        contactInfo = await client.fetch(`*[_type == "contactInfo"][0]`);
+    } catch (err) {
+        console.error('Failed to fetch contact info:', err);
+        contactInfo = null;
+    }
+
+    const contactItems = [
+        {
+            icon: <Headphones className="h-6 w-6" />,
+            title: contactInfo?.hotline || 'N/A',
+            subtitle: '24/7 Global Crisis Support • Free • Confidential',
+        },
+        {
+            icon: <Mail className="h-6 w-6" />,
+            title: contactInfo?.email || 'N/A',
+            subtitle: 'Replies within 24 hours',
+            href: contactInfo?.email ? `mailto:${contactInfo.email}` : undefined,
+        },
+        {
+            icon: <MapPin className="h-6 w-6" />,
+            title: 'Global Headquarters',
+            subtitle: contactInfo?.address || 'N/A',
+        },
+        {
+            icon: <Globe className="h-6 w-6" />,
+            title: 'Regional Offices',
+            subtitle: 'London • Dubai • Nairobi • New York • São Paulo',
+        },
+    ];
+
     return (
         <div className="space-y-8">
             <div>
                 <h3 className="text-2xl font-extrabold mb-4">We’re Here 24/7</h3>
-                <p className="text-white/90 leading-relaxed">
-                    One mission, one team
-                </p>
+                <p className="text-white/90 leading-relaxed">One mission, one team</p>
             </div>
 
             <div className="space-y-6">
-                {[
-                    {
-                        icon: <Headphones className="h-6 w-6" />,
-                        title: contactInfo.hotline,
-                        subtitle: '24/7 Global Crisis Support • Free • Confidential',
-                    },
-                    {
-                        icon: <Mail className="h-6 w-6" />,
-                        title: contactInfo.email,
-                        subtitle: 'Replies within 24 hours',
-                        href: `mailto:${contactInfo.email}`,
-                    },
-                    {
-                        icon: <MapPin className="h-6 w-6" />,
-                        title: 'Global Headquarters',
-                        subtitle: contactInfo.address,
-                    },
-                    {
-                        icon: <Globe className="h-6 w-6" />,
-                        title: 'Regional Offices',
-                        subtitle: 'London • Dubai • Nairobi • New York • São Paulo',
-                    },
-                ].map((item, i) => (
+                {contactItems.map((item, i) => (
                     <div key={i} className="flex gap-4 items-start">
                         <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">
                             {item.icon}

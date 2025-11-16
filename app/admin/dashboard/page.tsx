@@ -1,23 +1,23 @@
 // app/admin/dashboard/page.tsx
-import { redirect } from 'next/navigation';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
+
 import { client } from '@/sanity/lib/client';
-import { STORIES_QUERY, EVENTS_QUERY, NEWS_QUERY, RESOURCES_QUERY } from '@/lib/queries';
+import {STORIES_QUERY, EVENTS_QUERY, NEWS_QUERY, RESOURCES_QUERY, ADMINS_QUERY} from '@/lib/queries';
 import { format } from 'date-fns';
 import { Activity, TrendingUp, Users, Globe, Clock, AlertCircle } from 'lucide-react';
 import {Story} from "@/types";
+import AdminList from "@/app/admin/dashboard/admins/AdminList";
+import ContactInfo from "@/app/admin/dashboard/components/contactInfo";
 
 export default async function DashboardPage() {
-    // const session = await getServerSession(authOptions);
-    // if (!session?.user) redirect('/admin/login');
+
 
     // Fetch all data in parallel
-    const [stories, events, news, resources] = await Promise.all([
+    const [stories, events, news, resources, admins] = await Promise.all([
         client.fetch(STORIES_QUERY).catch(() => []),
         client.fetch(EVENTS_QUERY).catch(() => []),
         client.fetch(NEWS_QUERY).catch(() => []),
         client.fetch(RESOURCES_QUERY).catch(() => []),
+        client.fetch(ADMINS_QUERY).catch(() => []),
     ]);
 
     const totalStories = stories.length;
@@ -138,6 +138,7 @@ export default async function DashboardPage() {
                 </div>
             </div>
 
+
             {/* Live Activity Feed */}
             <div className="bg-white rounded-2xl border border-slate-200 p-6">
                 <h2 className="text-lg font-bold text-slate-900 mb-4">Live Activity</h2>
@@ -160,6 +161,9 @@ export default async function DashboardPage() {
                     </div>
                 </div>
             </div>
+
+            <ContactInfo />
+            <AdminList admins={admins} />
         </div>
     );
 }

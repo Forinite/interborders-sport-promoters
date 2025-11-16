@@ -105,3 +105,12 @@ export type Partner = {
     };
     website?: string;
 };
+
+export type AdminAccount = {
+    _id: string;            // Sanity document ID
+    name: string;
+    email: string;
+    hashedPassword?: string; // Optional in TS since it may be hidden
+    role?: string;           // Defaults to 'admin'
+    invitedAt?: string;      // ISO string of datetime
+};

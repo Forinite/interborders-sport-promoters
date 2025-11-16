@@ -1,15 +1,15 @@
 // app/(components)/sports/components/EventCard.tsx
-// app/(components)/sports/components/EventCard.tsx
 import Image from 'next/image';
 import Link from 'next/link';
 import { Calendar, MapPin, Users, BadgeDollarSign, ArrowRight } from 'lucide-react';
 import { FootballerImage } from "@/constants/images";
-import {Event} from "@/types";
+import { Event } from "@/types";
+import {urlFor} from "@/sanity/lib/image";
 
 
 
 export default function EventCard({ event }: { event: Event }) {
-    const imageUrl = event.image?.asset?.url || FootballerImage;
+    const imageUrl = event.image ? urlFor(event.image).width(800).height(450).url() : FootballerImage;
     const imageAlt = event.image?.alt || event.title;
 
     return (
@@ -26,12 +26,11 @@ export default function EventCard({ event }: { event: Event }) {
                 <div className="relative bg-white rounded-2xl border-2 border-[#CBD5E1] shadow-lg h-full flex flex-col overflow-hidden">
                     <div className="relative aspect-video">
                         <Image
-                            src={imageUrl}
+                            src={imageUrl!}
                             alt={imageAlt}
                             fill
                             className="object-cover transition-transform duration-700 group-hover:scale-105"
                             sizes="(max-width: 768px) 100vw, 33vw"
-                            priority={false}
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
 

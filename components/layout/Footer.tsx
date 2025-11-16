@@ -1,4 +1,5 @@
 //components/layout/Footer.tsx
+// components/layout/Footer.tsx
 import Link from 'next/link';
 import {
     Mail,
@@ -12,9 +13,18 @@ import {
     Heart,
     ArrowUpRight,
 } from 'lucide-react';
-import { contactInfo } from '@/constants/counsellingData';
+import { client } from '@/sanity/lib/client';
 
-export default function Footer() {
+export default async function Footer() {
+    // Fetch dynamic contact info directly
+    let contactInfo;
+    try {
+        contactInfo = await client.fetch(`*[_type == "contactInfo"][0]`);
+    } catch (err) {
+        console.error('Failed to fetch contact info:', err);
+        contactInfo = null;
+    }
+
     const currentYear = new Date().getFullYear();
 
     const quickLinks = [
@@ -33,10 +43,10 @@ export default function Footer() {
     ];
 
     const socials = [
-        { icon: Twitter, href: contactInfo.social.twitter, color: 'hover:text-[#1DA1F2]' },
-        { icon: Instagram, href: contactInfo.social.instagram, color: 'hover:text-[#E4405F]' },
-        { icon: Youtube, href: contactInfo.social.youtube || '#', color: 'hover:text-[#FF0000]' },
-        { icon: Facebook, href: contactInfo.social.facebook || '#', color: 'hover:text-[#1877F2]' },
+        { icon: Twitter, href: contactInfo?.social?.twitter || '#', color: 'hover:text-[#1DA1F2]' },
+        { icon: Instagram, href: contactInfo?.social?.instagram || '#', color: 'hover:text-[#E4405F]' },
+        { icon: Youtube, href: contactInfo?.social?.youtube || '#', color: 'hover:text-[#FF0000]' },
+        { icon: Facebook, href: contactInfo?.social?.facebook || '#', color: 'hover:text-[#1877F2]' },
     ];
 
     return (
@@ -126,19 +136,22 @@ export default function Footer() {
                             <li className="flex items-start gap-3">
                                 <Phone className="h-4 w-4 mt-[2px]" />
                                 <div>
-                                    <p className="text-sm font-medium">{contactInfo.hotline}</p>
+                                    <p className="text-sm font-medium">{contactInfo?.hotline || 'N/A'}</p>
                                     <p className="text-xs opacity-80">24/7 Crisis Support</p>
                                 </div>
                             </li>
                             <li className="flex items-center gap-3">
                                 <Mail className="h-4 w-4" />
-                                <a href={`mailto:${contactInfo.email}`} className="text-sm hover:underline">
-                                    {contactInfo.email}
+                                <a
+                                    href={`mailto:${contactInfo?.email || ''}`}
+                                    className="text-sm hover:underline"
+                                >
+                                    {contactInfo?.email || 'N/A'}
                                 </a>
                             </li>
                             <li className="flex items-start gap-3">
                                 <MapPin className="h-4 w-4 mt-[2px]" />
-                                <p className="text-sm leading-snug">{contactInfo.address}</p>
+                                <p className="text-sm leading-snug">{contactInfo?.address || 'N/A'}</p>
                             </li>
                         </ul>
 
@@ -170,4 +183,3 @@ export default function Footer() {
         </footer>
     );
 }
-

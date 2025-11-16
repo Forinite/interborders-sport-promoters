@@ -18,6 +18,8 @@ import DeleteNewsModal from '../News/DeleteNewsModal';
 import AddResourceModal from '../Resources/AddResourceModal';
 import EditResourceModal from '../Resources/EditResourceModal';
 import DeleteResourceModal from '../Resources/DeleteResourceModal';
+import InviteAdminFormModal from "@/app/admin/dashboard/Modals/Admins/AddAdminModal";
+import DeleteAdminModal from "@/app/admin/dashboard/Modals/Admins/DeleteAdminModal";
 
 export default function ModalWrapper() {
     const { modal, closeModal } = useModal();
@@ -78,6 +80,9 @@ export default function ModalWrapper() {
                         {modal.type === 'addResource' && <AddResourceModal />}
                         {modal.type === 'editResource' && <EditResourceModal resource={modal.data} />}
                         {modal.type === 'deleteResource' && <DeleteResourceModal resource={modal.data} />}
+
+                        {modal.type === 'addAdmin' && <InviteAdminFormModal />}
+                        {modal.type === 'deleteResource' && <DeleteAdminModal data={modal.data} />}
                     </div>
                 </div>
             </div>

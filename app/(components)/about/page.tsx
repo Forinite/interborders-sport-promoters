@@ -2,8 +2,7 @@
 // app/(components)/about/page.tsx
 import MissionSection from './components/MissionSection';
 import TeamGrid from './components/TeamGrid';
-import PartnerLogos from './components/PartnerLogos';
-import StatsBanner from './components/StatsBanner';
+
 import { mission, team, partners } from '@/constants/aboutData';
 
 export default function AboutPage() {
@@ -23,10 +22,8 @@ export default function AboutPage() {
                     </p>
                 </div>
 
-                {/*<StatsBanner stats={stats} />*/}
                 <MissionSection mission={mission} />
                 <TeamGrid team={team} />
-                {/*<PartnerLogos partners={partners} />*/}
             </div>
         </div>
     );

@@ -17,6 +17,8 @@ type ModalType =
     | { type: 'addResource'; data?: never }
     | { type: 'editResource'; data: any }
     | { type: 'deleteResource'; data: any }
+    | { type: 'addAdmin'; data?: never }
+    | { type: 'deleteAdmin'; data: any }
     | null;
 
 interface ModalContextType {

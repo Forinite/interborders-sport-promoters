@@ -1,13 +1,15 @@
 // app/(components)/sports/components/NewsCard.tsx
-// app/(components)/sports/components/NewsCard.tsx
+
+
 import Image from 'next/image';
 import Link from 'next/link';
 import { Calendar, ArrowRight } from 'lucide-react';
 import { FootballerImage } from "@/constants/images";
-import {News} from "@/types";
+import { News } from "@/types";
+import {urlFor} from "@/sanity/lib/image";
 
 export default function NewsCard({ news }: { news: News }) {
-    const imageUrl = news.image?.asset?.url || FootballerImage;
+    const imageUrl = news.image ? urlFor(news.image).width(600).height(400).url() : FootballerImage;
     const imageAlt = news.image?.alt || news.title;
 
     return (
@@ -31,17 +33,16 @@ export default function NewsCard({ news }: { news: News }) {
 
                     {/* Actual Content Card */}
                     <div className="relative h-full bg-white rounded-xl border-2 border-[#CBD5E1] overflow-hidden
-                          flex flex-col md:flex-row">
+                        flex flex-col md:flex-row">
 
                         {/* Image */}
                         <div className="relative w-full md:w-5/12 h-48 md:h-full overflow-hidden">
                             <Image
-                                src={imageUrl}
+                                src={imageUrl!}
                                 alt={imageAlt}
                                 fill
                                 className="object-cover"
                                 sizes="(max-width: 768px) 100vw, 40vw"
-                                priority={false}
                             />
                         </div>
 
