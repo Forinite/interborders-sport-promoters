@@ -1,7 +1,7 @@
 // app/(components)/about/page.tsx
 // app/(components)/about/page.tsx
 import MissionSection from './components/MissionSection';
-import TeamGrid from './components/TeamGrid';
+// import TeamGrid from './components/TeamGrid';
 
 import { mission, team, partners } from '@/constants/aboutData';
 
@@ -23,7 +23,7 @@ export default function AboutPage() {
                 </div>
 
                 <MissionSection mission={mission} />
-                <TeamGrid team={team} />
+                {/*<TeamGrid team={team} />*/}
             </div>
         </div>
     );
