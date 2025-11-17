@@ -1,7 +1,7 @@
 // app/(components)/home/components/HeroSection.tsx
 import Image from 'next/image';
 import Link from 'next/link';
-import { FootballerImage } from '@/constants/images';
+import {BasketBallPlayersImage, BasketBallPlayersImage2, FootballerImage} from '@/constants/images';
 import { ArrowRight, Sparkles } from 'lucide-react';
 
 export default function HeroSection() {
@@ -10,7 +10,7 @@ export default function HeroSection() {
             {/* Background */}
             <div className="absolute inset-0 z-10">
                 <Image
-                    src={FootballerImage}
+                    src={BasketBallPlayersImage2}
                     alt="Nigerian youth athlete in action"
                     fill
                     priority
@@ -50,8 +50,11 @@ export default function HeroSection() {
 
                         {/* CTA Buttons */}
                         <div className="flex flex-col sm:flex-row gap-4 mt-4">
-                            <LayeredButton href="/join" primary>
-                                Join the Movement <ArrowRight className="ml-2 w-5 h-5" />
+                            <LayeredButton href="/counselling" primary>
+                                <div className="flex items-center gap-2" >
+                                    Get Help <ArrowRight className="ml-2 w-5 h-5 inline" />
+                                </div>
+
                             </LayeredButton>
                             <LayeredButton href="/stories">Read Success Stories</LayeredButton>
                         </div>

@@ -38,7 +38,6 @@
 import HeroSection from './components/HeroSection';
 import FeaturedStories from './components/FeaturedStories';
 import QuickLinks from './components/QuickLinks';
-import { featuredStories } from '@/constants/homeData';
 import GrainOverlay from '@/components/effects/GrainOverlay';
 
 export default function HomePage() {
@@ -46,7 +45,7 @@ export default function HomePage() {
         <main className="bg-black text-white overflow-hidden">
             <GrainOverlay />
             <HeroSection />
-            <FeaturedStories stories={featuredStories} />
+            <FeaturedStories />
             <QuickLinks />
         </main>
     );

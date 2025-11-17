@@ -68,7 +68,7 @@ export default function FilterBar({
                             <CustomSelectValue placeholder="All Nigeria" />
                         </CustomSelectTrigger>
                         <CustomSelectContent>
-                            <CustomSelectItem value="all">All Nigeria</CustomSelectItem>
+                            <CustomSelectItem value="all">All Locations</CustomSelectItem>
                             <CustomSelectItem value="lagos">Lagos</CustomSelectItem>
                             <CustomSelectItem value="abuja">Abuja</CustomSelectItem>
                             <CustomSelectItem value="ph">Port Harcourt</CustomSelectItem>

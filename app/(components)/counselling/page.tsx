@@ -1,10 +1,11 @@
 // app/(components)/counselling/page.tsx
+// app/(components)/counselling/page.tsx
 import ResourceGrid from './components/ResourceGrid';
 import BookingPanel from './components/BookingPanel';
 import ContactBand from './components/ContactBand';
 import { RESOURCES_QUERY } from '@/lib/queries';
 import type { Resource } from '@/types';
-import {client} from "@/sanity/lib/client";
+import { client } from '@/sanity/lib/client';
 
 async function fetchResources(): Promise<Resource[]> {
     try {
@@ -20,47 +21,54 @@ export default async function CounsellingPage() {
     const resources = await fetchResources();
 
     return (
-        <div className="min-h-screen bg-[#F8FAFC]">
-            <div className="container mx-auto px-5 md:px-8 py-16 md:py-24 max-w-7xl">
+        <div className="min-h-screen bg-[#F8FAFC] overflow-x-hidden">
+            <div className="container mx-auto px-4 sm:px-6 md:px-8 py-12 sm:py-16 md:py-24 max-w-7xl">
 
                 {/* National Healing Header */}
-                <div className="text-center mb-20">
-                    <h1 className="text-5xl md:text-7xl font-black text-[#1E293B] leading-tight">
+                <header className="text-center mb-12 sm:mb-16 md:mb-20">
+                    <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-[#1E293B] leading-tight">
             <span className="relative inline-block">
-              <span className="absolute -translate-x-1.5 -translate-y-1.5 text-[#E2E8F0] select-none opacity-70">
+              <span className="absolute -translate-x-1 -translate-y-1 text-[#E2E8F0] select-none opacity-70 text-3xl sm:text-4xl md:text-5xl lg:text-6xl">
                 GET SUPPORT
               </span>
               <span className="relative">GET SUPPORT</span>
             </span>
                     </h1>
 
-                    <p className="mt-8 text-xl md:text-2xl text-[#475569] max-w-4xl mx-auto leading-relaxed font-light">
+                    <p className="mt-6 sm:mt-8 text-base sm:text-lg md:text-xl lg:text-2xl text-[#475569] max-w-3xl mx-auto leading-relaxed font-light px-2">
                         Free counselling, mental health resources, and personal development tools designed for youth.
                     </p>
 
-                    {/* Official Seal */}
-                    <div className="mt-12 inline-flex items-center gap-6 px-10 py-6 bg-white border-4 border-[#CBD5E1] rounded-full shadow-2xl">
-                        <div className="w-16 h-16 bg-[#0A84FF] rounded-full flex items-center justify-center">
-                            <span className="text-white font-black text-2xl">ISP</span>
+                    {/* Official Seal — Mobile Responsive */}
+                    <div className="mt-8 sm:mt-10 md:mt-12 inline-flex flex-col sm:flex-row items-center gap-4 sm:gap-6 px-6 sm:px-8 md:px-10 py-5 sm:py-6 bg-white border-4 border-[#CBD5E1] rounded-full shadow-2xl w-fit mx-auto">
+                        <div className="w-14 h-14 md:block hidden sm:w-16 sm:h-16 bg-[#0A84FF] rounded-full flex items-center justify-center flex-shrink-0">
+                            <span className="text-white font-black text-xl sm:text-2xl">ISP</span>
                         </div>
-                        <div className="text-left">
-                            <p className="text-2xl font-bold text-[#1E293B]">Youth</p>
-                            <p className="text-sm text-[#64748B] font-medium">Mental Health & Development Division</p>
+                        <div className="text-center sm:text-left">
+                            <p className="text-xl sm:text-2xl font-bold text-[#1E293B]">Youth</p>
+                            <p className="text-xs sm:text-sm text-[#64748B] font-medium">Mental Health & Development Division</p>
                         </div>
                     </div>
-                </div>
+                </header>
 
-                {/* Main Layout */}
-                <div className="grid gap-12 lg:grid-cols-3">
-                    <div className="lg:col-span-2">
+                {/* Main Layout — Mobile Stacked, Desktop Side-by-Side */}
+                <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
+                    {/* Resources Section */}
+                    <section className="flex-1 lg:w-0">
                         <ResourceGrid resources={resources} />
-                    </div>
-                    <div className="lg:col-span-1">
-                        <BookingPanel />
-                    </div>
+                    </section>
+
+                    {/* Booking Panel — Full Width on Mobile */}
+                    <aside className="lg:w-96 xl:w-80 flex-shrink-0">
+                        <div className="sticky top-6">
+                            <BookingPanel />
+                        </div>
+                    </aside>
                 </div>
 
-                <ContactBand />
+                <div className="mt-16 sm:mt-20">
+                    <ContactBand />
+                </div>
             </div>
         </div>
     );

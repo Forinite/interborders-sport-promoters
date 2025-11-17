@@ -15,21 +15,21 @@ export default function NewsCard({ news }: { news: News }) {
     return (
         <Link href={`/sports/news/${news.slug.current}`} className="block group focus:outline-none">
             {/* Master Container */}
-            <div className="relative h-[280px] md:h-[320px] transition-all duration-500
+            <div className="relative max-w-[95%] h-[280px] md:h-[320px] transition-all duration-500
                       group-hover:shadow-2xl group-focus-within:ring-4 group-focus-within:ring-[#0A84FF]/20">
 
                 {/* LAYER 1: Deep Back */}
                 <div className="absolute inset-0 translate-x-3 translate-y-3 bg-[#E2E8F0] rounded-xl
-                        transition-all duration-500 group-hover:translate-x-12 group-hover:translate-y-12" />
+                        transition-all duration-500 group-hover:translate-x-6 group-hover:translate-y-6" />
 
                 {/* LAYER 2: Mid Layer */}
                 <div className="absolute inset-0 translate-x-2 translate-y-2 bg-[#F1F5F9] rounded-xl border-2 border-[#CBD5E1]
-                        transition-all duration-500 group-hover:translate-x-8 group-hover:translate-y-8" />
+                        transition-all duration-500 group-hover:translate-x-4 group-hover:translate-y-4" />
 
                 {/* LAYER 3: Main Card */}
                 <div className="absolute inset-0 translate-x-1 translate-y-1 bg-white rounded-xl border-2 border-[#CBD5E1]
                         shadow-lg transition-all duration-500
-                        group-hover:translate-x-4 group-hover:translate-y-4">
+                        group-hover:translate-x-2 group-hover:translate-y-2">
 
                     {/* Actual Content Card */}
                     <div className="relative h-full bg-white rounded-xl border-2 border-[#CBD5E1] overflow-hidden
