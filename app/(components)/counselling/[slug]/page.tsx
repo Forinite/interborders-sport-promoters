@@ -1,4 +1,5 @@
 // app/(components)/counselling/[slug]/page.tsx
+import type { JSX } from "react";
 
 import { client } from "@/sanity/lib/client";
 
