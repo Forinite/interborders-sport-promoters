@@ -6,8 +6,9 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useModal } from "../ModalContext";
 import { useToast } from "@/components/ui/use-toast";
+import {AdminAccount} from "@/types";
 
-export default function DeleteAdminModal({ data }) {
+export default function DeleteAdminModal({ data } : { data: AdminAccount }) {
     const { closeModal } = useModal();
     const { toast } = useToast();
     const [loading, setLoading] = useState(false);
