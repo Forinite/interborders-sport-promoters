@@ -26,6 +26,16 @@ export async function PUT(req: Request) {
         if (!id || !title || !format) return NextResponse.json({ error: 'Missing fields' }, { status: 400 });
 
         const current = await writeClient.getDocument(id);
+
+
+        if (!current) {
+            return NextResponse.json(
+                { error: 'Event not found' },
+                { status: 404 }
+            );
+        }
+
+
         let imageRef = current.image?.asset?._ref;
         let fileRef = current.file?.asset?._ref;
 

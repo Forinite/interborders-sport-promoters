@@ -1,5 +1,5 @@
 // app/api/story/add/route.ts
-// app/api/story/add/route.ts
+
 import { NextResponse } from 'next/server';
 import { writeClient } from '@/sanity/lib/writeClient';
 import { v4 as uuidv4 } from 'uuid';

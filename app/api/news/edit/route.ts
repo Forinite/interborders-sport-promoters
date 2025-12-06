@@ -24,6 +24,15 @@ export async function PUT(req: Request) {
         }
 
         const current = await writeClient.getDocument(id);
+
+        if (!current) {
+            return NextResponse.json(
+                { error: 'Event not found' },
+                { status: 404 }
+            );
+        }
+
+
         let imageRef = current.image?.asset?._ref;
 
         if (file && file.size > 0) {

@@ -1,5 +1,5 @@
 // app/api/contact-info/update/route.ts
-// app/api/contact-info/update/route.ts
+
 import { NextResponse } from "next/server";
 import {writeClient} from "@/sanity/lib/writeClient";
 
