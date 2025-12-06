@@ -4,7 +4,7 @@ import type { Story, Event, News, Resource, AdminAccount } from "@/types";
 import { client } from '@/sanity/lib/client';
 import {STORIES_QUERY, EVENTS_QUERY, NEWS_QUERY, RESOURCES_QUERY, ADMINS_QUERY} from '@/lib/queries';
 import { format } from 'date-fns';
-import { Activity, TrendingUp, Users, Globe, Clock, AlertCircle } from 'lucide-react';
+import { Activity, TrendingUp,  Globe, Clock, AlertCircle } from 'lucide-react';
 import AdminList from "@/app/admin/dashboard/admins/AdminList";
 import ContactInfo from "@/app/admin/dashboard/components/contactInfo";
 
