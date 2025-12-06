@@ -14,7 +14,7 @@ export default function EventsAdminPage() {
     if (loading) return <LoadingState />;
     if (error) return <ErrorState error={error} onRetry={refetch} />;
 
-    return <EventsList events={events} />;
+   if (events) return <EventsList events={events} />;
 }
 
 // Compact, professional states

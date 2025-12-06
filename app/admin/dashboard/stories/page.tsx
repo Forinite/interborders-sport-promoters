@@ -13,7 +13,7 @@ export default function StoriesPage() {
     if (loading) return <LoadingState />;
     if (error) return <ErrorState error={error} onRetry={refetch} />;
 
-    return <StoriesList stories={stories} />;
+    if (stories) return <StoriesList stories={stories} />;
 }
 
 function LoadingState() {

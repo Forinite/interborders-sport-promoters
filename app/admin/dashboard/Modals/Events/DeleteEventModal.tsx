@@ -19,7 +19,7 @@ export default function DeleteEventModal({ event }: Props) {
             const res = await fetch(`/api/event/delete?id=${event._id}`, { method: 'DELETE' });
             if (!res.ok) throw new Error();
             closeModal();
-        } catch { alert('Failed to delete'); } finally { setDelete(false); }
+        } catch { alert('Failed to delete'); } finally { setDeleting(false); }
     };
 
     return (
