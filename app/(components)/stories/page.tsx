@@ -55,7 +55,7 @@ export default async function StoriesPage() {
                 </div>
 
                 {/* Rest of the Grid */}
-                <StoryGrid stories={allStories.slice(1)} />
+                <StoryGrid stories={allStories} />
             </div>
         </div>
     );
