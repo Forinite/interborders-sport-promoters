@@ -71,16 +71,19 @@ export default function StoryPage({ params }: { params: { slug: string } }) {
             </div>
 
             <div className="flex items-center justify-between border-t pt-6">
-                <div className="flex gap-2">
-                    {story.tags.map((tag) => (
-                        <span
-                            key={tag}
-                            className="px-3 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800"
-                        >
-              {tag}
-            </span>
-                    ))}
-                </div>
+                {story.tags &&
+
+                    <div className="flex gap-2">
+                        {story.tags.map((tag) => (
+                            <span
+                                key={tag}
+                                className="px-3 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800"
+                                >
+                                {tag}
+                             </span>
+                        ))}
+                    </div>
+                }
                 <Button variant="outline" size="sm">
                     <Share2 className="h-4 w-4 mr-2" />
                     Share

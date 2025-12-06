@@ -6,7 +6,7 @@ import { EVENTS_QUERY } from '@/lib/queries';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import {Calendar, MapPin, ArrowLeft, Clock, Trophy, DollarSign, Users} from 'lucide-react';
+import {Calendar, MapPin, ArrowLeft} from 'lucide-react';
 
 export default async function EventDetailPage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;
