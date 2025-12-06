@@ -1,10 +1,10 @@
 // app/admin/dashboard/page.tsx
+import type { Story, Event, News, Resource, AdminAccount } from "@/types";
 
 import { client } from '@/sanity/lib/client';
 import {STORIES_QUERY, EVENTS_QUERY, NEWS_QUERY, RESOURCES_QUERY, ADMINS_QUERY} from '@/lib/queries';
 import { format } from 'date-fns';
 import { Activity, TrendingUp, Users, Globe, Clock, AlertCircle } from 'lucide-react';
-import {Story} from "@/types";
 import AdminList from "@/app/admin/dashboard/admins/AdminList";
 import ContactInfo from "@/app/admin/dashboard/components/contactInfo";
 
@@ -12,16 +12,18 @@ export default async function DashboardPage() {
 
 
     // Fetch all data in parallel
+
     const [stories, events, news, resources, admins] = await Promise.all([
-        client.fetch(STORIES_QUERY).catch(() => []),
-        client.fetch(EVENTS_QUERY).catch(() => []),
-        client.fetch(NEWS_QUERY).catch(() => []),
-        client.fetch(RESOURCES_QUERY).catch(() => []),
-        client.fetch(ADMINS_QUERY).catch(() => []),
+        client.fetch<Story[]>(STORIES_QUERY).catch(() => []),
+        client.fetch<Event[]>(EVENTS_QUERY).catch(() => []),
+        client.fetch<News[]>(NEWS_QUERY).catch(() => []),
+        client.fetch<Resource[]>(RESOURCES_QUERY).catch(() => []),
+        client.fetch<AdminAccount[]>(ADMINS_QUERY).catch(() => []),
     ]);
 
+
     const totalStories = stories.length;
-    const featuredStories= stories.filter(s => s.featured).length;
+    const featuredStories = stories.filter(s => s.featured).length;
     const upcomingEvents = events.filter(e => new Date(e.date) >= new Date()).length;
     const totalEvents = events.length;
     const recentNews = news.filter(n => n.publishedAt && new Date(n.publishedAt) > new Date(Date.now() - 7*24*60*60*1000)).length;
