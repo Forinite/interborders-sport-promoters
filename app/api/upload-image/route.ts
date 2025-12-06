@@ -1,14 +1,11 @@
-// app/api/upload-image/route.ts
-import { createClient } from 'next-sanity';
+// app/api/upload-image/route.ts'
+
+import {writeClient} from "@/sanity/lib/writeClient";
+
+
 import { NextRequest, NextResponse } from 'next/server';
 
-const client = createClient({
-    projectId: process.env.SANITY_PROJECT_ID!,
-    dataset: process.env.SANITY_DATASET!,
-    apiVersion: '2025-11-07',
-    token: process.env.SANITY_WRITE_TOKEN!,
-    useCdn: false,
-});
+
 
 export async function POST(request: NextRequest) {
     try {
@@ -24,7 +21,7 @@ export async function POST(request: NextRequest) {
         const buffer = Buffer.from(arrayBuffer);
 
         // Upload with explicit contentType
-        const asset = await client.assets.upload('image', buffer, {
+        const asset = await writeClient.assets.upload('image', buffer, {
             filename: file.name,
             contentType: file.type || 'application/octet-stream',
             label: 'story-image',
