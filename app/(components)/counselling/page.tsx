@@ -41,7 +41,7 @@ export default async function CounsellingPage() {
 
                     {/* Official Seal — Mobile Responsive */}
                     <div className="mt-8 sm:mt-10 md:mt-12 inline-flex flex-col sm:flex-row items-center gap-4 sm:gap-6 px-6 sm:px-8 md:px-10 py-5 sm:py-6 bg-white border-4 border-[#CBD5E1] rounded-full shadow-2xl w-fit mx-auto">
-                        <div className="w-14 h-14 md:block hidden sm:w-16 sm:h-16 bg-[#0A84FF] rounded-full flex items-center justify-center flex-shrink-0">
+                        <div className="w-14 h-14 md:flex hidden sm:w-16 sm:h-16 bg-[#0A84FF] rounded-full items-center justify-center flex-shrink-0">
                             <span className="text-white font-black text-xl sm:text-2xl">ISP</span>
                         </div>
                         <div className="text-center sm:text-left">

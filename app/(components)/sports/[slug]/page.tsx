@@ -1,77 +1,141 @@
 // app/(components)/sports/[slug]/page.tsx
-import { notFound } from 'next/navigation';
+
+// app/(components)/sports/[slug]/page.tsx
+import { client } from '@/sanity/lib/client';
+import { EVENTS_QUERY } from '@/lib/queries';
 import Image from 'next/image';
-import { Button } from '@/components/ui/button';
-import { Calendar, MapPin, Users, BadgeDollarSign, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
-import { events } from '@/constants/sportsData';
+import { Button } from '@/components/ui/button';
+import {Calendar, MapPin, ArrowLeft, Clock, Trophy, DollarSign, Users} from 'lucide-react';
 
-export const dynamic = 'force-static';
+export default async function EventDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+    const { slug } = await params;
 
-export const dynamicParams = true;
-export const revalidate = 0;
+    // Fetch all events, then find the one with matching slug
+    const events = await client.fetch(EVENTS_QUERY);
+    const event = events.find((e: any) => e.slug.current === slug);
 
-export async function generateStaticParams() {
-    return events.map((e) => ({ slug: e.slug.current }));
-}
+    console.log('Sanity event object:', event);
 
-export default function EventDetailPage({ params }: { params: { slug: string } }) {
-    const event = events.find((e) => e.slug.current === params.slug);
+    if (!event) {
+        return <div className="container mx-auto px-4 py-12 text-center">Event not found</div>;
+    }
 
-    if (!event) notFound();
+    const eventDate = new Date(event.date).toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+    });
 
     return (
-        <article className="container mx-auto px-4 py-8 max-w-4xl">
-            <Link href="/sports" className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground mb-8">
-                <ArrowLeft className="h-4 w-4" /> Back to Sports
+        <article className="container mx-auto px-6 py-16 max-w-5xl">
+            {/* Back Link */}
+            <Link
+                href="/sports"
+                className="inline-flex items-center gap-2 text-slate-500 hover:text-slate-900 font-medium mb-12 transition-colors"
+            >
+                <ArrowLeft className="h-4 w-4" />
+                Back to Events
             </Link>
 
-            <header className="mb-8">
-                <h1 className="text-3xl md:text-4xl font-bold mb-4">{event.title}</h1>
-                <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
-          <span className="flex items-center gap-1">
-            <Calendar className="h-4 w-4" />
-              {new Date(event.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
-              {event.time && ` · ${event.time}`}
-          </span>
-                    <span className="flex items-center gap-1">
-            <MapPin className="h-4 w-4" />
-                        {event.location}
-          </span>
+            <div className="grid lg:grid-cols-3 gap-12">
+                {/* Main Content */}
+                <div className="lg:col-span-2 space-y-12">
+
+                    {/* Title */}
+                    <header>
+                        <h1 className="text-4xl md:text-5xl font-bold text-slate-900 leading-tight">
+                            {event.title}
+                        </h1>
+                        <p className="text-xl text-slate-600 mt-4">
+                            {event.sport}
+                        </p>
+                    </header>
+
+                    {/* Meta */}
+                    <div className="flex flex-wrap gap-6 text-sm text-slate-600 border-b pb-8">
+                        <div className="flex items-center gap-2">
+                            <Calendar className="h-4 w-4 text-slate-400" />
+                            {eventDate}{event.time && ` · ${event.time}`}
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <MapPin className="h-4 w-4 text-slate-400" />
+                            {event.location}
+                        </div>
+                    </div>
+
+                    {/* Description */}
+                    <div className="prose prose-lg max-w-none text-slate-700 leading-relaxed">
+                        <p className="whitespace-pre-line">{event.description}</p>
+                    </div>
+
+                    {/* Details Grid */}
+                    <div className="grid sm:grid-cols-2 gap-8 pt-8 border-t">
+                        <div>
+                            <p className="text-sm text-slate-500 uppercase tracking-wider">Age Group</p>
+                            <p className="text-2xl font-semibold text-slate-900 mt-1">{event.ageGroup}</p>
+                        </div>
+                        <div>
+                            <p className="text-sm text-slate-500 uppercase tracking-wider">Entry Fee</p>
+                            <p className="text-2xl font-semibold text-slate-900 mt-1">
+                                {event.isFree ? 'Free' : 'Paid Registration'}
+                            </p>
+                        </div>
+                        {event.spotsLeft !== undefined && (
+                            <div className="sm:col-span-2">
+                                <p className="text-sm text-slate-500 uppercase tracking-wider">Spots Remaining</p>
+                                <p className={`text-3xl font-bold mt-1 ${event.spotsLeft < 20 ? 'text-red-600' : 'text-slate-900'}`}>
+                                    {event.spotsLeft}
+                                    {event.spotsLeft < 20 && <span className="text-sm font-normal ml-2">— Limited availability</span>}
+                                </p>
+                            </div>
+                        )}
+                    </div>
                 </div>
-            </header>
 
-            <div className="relative aspect-video mb-8 rounded-lg overflow-hidden bg-muted">
-                <Image
-                    src={`/images/events/${event._id}.jpg`}
-                    alt={event.title}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, 800px"
-                />
-            </div>
-
-            <div className="prose prose-lg max-w-none mb-8">
-                <p className="text-lg leading-relaxed">{event.description}</p>
-                <ul className="mt-6 space-y-2">
-                    <li><strong>Sport:</strong> {event.sport}</li>
-                    <li><strong>Age Group:</strong> {event.ageGroup}</li>
-                    <li><strong>Cost:</strong> {event.isFree ? 'Free' : 'Paid Registration'}</li>
-                    {event.spotsLeft !== undefined && (
-                        <li><strong>Spots Left:</strong> {event.spotsLeft}</li>
+                {/* Sidebar */}
+                <aside className="space-y-8">
+                    {/* Image */}
+                    {event.image?.asset?.url ? (
+                        <div className="rounded-2xl overflow-hidden shadow-sm border">
+                            <Image
+                                src={event.image.asset.url}
+                                alt={event.title}
+                                width={800}
+                                height={600}
+                                className="w-full h-auto object-cover"
+                                priority
+                            />
+                        </div>
+                    ) : (
+                        <div className="bg-slate-100 border-2 border-dashed rounded-2xl h-96 flex items-center justify-center">
+                            <Calendar className="h-16 w-16 text-slate-300" />
+                        </div>
                     )}
-                </ul>
-            </div>
 
-            <div className="flex gap-4">
-                <Button asChild className="flex-1 bg-green-600 hover:bg-green-700">
-                    <a href={event.registrationLink} target="_blank" rel="noopener noreferrer">
-                        Register Now
-                    </a>
-                </Button>
-                <Button variant="outline" asChild>
-                    <Link href="/contact">Contact Organizer</Link>
-                </Button>
+                    {/* CTA */}
+                    <div className="space-y-4">
+                        {event.registrationLink ? (
+                            <Button
+                                asChild
+                                size="lg"
+                                className="w-full bg-slate-900 hover:bg-slate-800 text-white font-medium"
+                            >
+                                <a href={event.registrationLink} target="_blank" rel="noopener noreferrer">
+                                    Register for Event
+                                </a>
+                            </Button>
+                        ) : (
+                            <div className="text-center py-8 text-slate-500">
+                                <p className="font-medium">Registration not open yet</p>
+                            </div>
+                        )}
+
+                        <Button asChild variant="outline" size="lg" className="w-full">
+                            <Link href="/contact">Contact Organizer</Link>
+                        </Button>
+                    </div>
+                </aside>
             </div>
         </article>
     );

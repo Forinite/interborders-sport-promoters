@@ -21,6 +21,9 @@ export default function AddResourceModal() {
     const [pdfFile, setPdfFile] = useState<File | null>(null);
     const [preview, setPreview] = useState<string | null>(null);
     const [body, setBody] = useState<any>(null);
+    const [pdfDrag, setPdfDrag] = useState(false);
+    const [imageDrag, setImageDrag] = useState(false);
+
     const imageInputRef = useRef<HTMLInputElement>(null);
     const pdfInputRef = useRef<HTMLInputElement>(null);
 
@@ -51,6 +54,34 @@ export default function AddResourceModal() {
             setUploading(false);
         }
     };
+
+    const handleFileDrop = (e: React.DragEvent, type: 'pdf' | 'image') => {
+        e.preventDefault();
+        e.stopPropagation();
+        const file = e.dataTransfer.files[0];
+        if (!file) return;
+
+        if (type === 'pdf') {
+            if (file.type !== 'application/pdf') return toast({ title: 'Invalid file', description: 'Please drop a PDF file.', variant: 'destructive' });
+            if (file.size > 50 * 1024 * 1024) return toast({ title: 'Too large', description: 'Max 50MB', variant: 'destructive' });
+            setPdfFile(file);
+        }
+
+        if (type === 'image') {
+            if (!file.type.startsWith('image/')) return toast({ title: 'Invalid file', description: 'Please drop an image file.', variant: 'destructive' });
+            if (file.size > 10 * 1024 * 1024) return toast({ title: 'Too large', description: 'Max 10MB', variant: 'destructive' });
+            setImageFile(file);
+            setPreview(URL.createObjectURL(file));
+        }
+
+        // Reset drag state
+        if (type === 'pdf') setPdfDrag(false);
+        if (type === 'image') setImageDrag(false);
+    };
+
+    const handleDragOver = (e: React.DragEvent) => e.preventDefault();
+    const handleDragEnter = (type: 'pdf' | 'image') => type === 'pdf' ? setPdfDrag(true) : setImageDrag(true);
+    const handleDragLeave = (type: 'pdf' | 'image') => type === 'pdf' ? setPdfDrag(false) : setImageDrag(false);
 
     return (
         <form onSubmit={handleSubmit} className="sm:p-6 lg:p-8 space-y-5 max-w-4xl mx-auto">
@@ -95,7 +126,13 @@ export default function AddResourceModal() {
                     {format === 'pdf' && (
                         <div>
                             <Label>PDF File *</Label>
-                            <div className="mt-2">
+                            <div
+                                className={`mt-2 ${pdfDrag ? 'border-blue-400 bg-blue-50' : ''}`}
+                                onDragOver={handleDragOver}
+                                onDragEnter={() => handleDragEnter('pdf')}
+                                onDragLeave={() => handleDragLeave('pdf')}
+                                onDrop={(e) => handleFileDrop(e, 'pdf')}
+                            >
                                 {pdfFile ? (
                                     <div className="relative group rounded-lg border border-slate-200 bg-slate-50 p-4 shadow-sm">
                                         <div className="flex items-center gap-2 text-sm">
@@ -134,7 +171,13 @@ export default function AddResourceModal() {
 
                     <div>
                         <Label className="flex items-center gap-1"><ImageIcon className="h-4 w-4" /> Thumbnail *</Label>
-                        <div className="mt-2">
+                        <div
+                            className={`mt-2 ${imageDrag ? 'border-blue-400 bg-blue-50' : ''}`}
+                            onDragOver={handleDragOver}
+                            onDragEnter={() => handleDragEnter('image')}
+                            onDragLeave={() => handleDragLeave('image')}
+                            onDrop={(e) => handleFileDrop(e, 'image')}
+                        >
                             {preview ? (
                                 <div className="relative group rounded-lg overflow-hidden border border-slate-200 bg-slate-50 shadow-sm">
                                     <img src={preview} alt="Preview" className="w-full h-60 object-cover group-hover:scale-105 transition-transform" />

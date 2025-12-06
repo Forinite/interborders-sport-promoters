@@ -11,12 +11,16 @@ import { event } from './event';
 import { news } from './news';
 import { resource } from './resource';
 import { story } from './story';
-import {contactInfo} from "@/sanity/schemaTypes/contactInfo";
+import { contactInfo } from './contactInfo';
+import { about } from './about';
+import { adminAccount } from './adminAccount';
 
-export  const schemaTypes: SchemaTypeDefinition[] = [
+export const schemaTypes: SchemaTypeDefinition[] = [
     story,
     event,
     news,
     resource,
-    contactInfo
+    contactInfo,
+    about,
+    adminAccount
 ];

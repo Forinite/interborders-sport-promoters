@@ -1,6 +1,5 @@
 // types/index.tsx
-// types/index.tsx
-// All public-facing data types
+
 
 export type Story = {
     _id: string;
@@ -114,3 +113,16 @@ export type AdminAccount = {
     role?: string;           // Defaults to 'admin'
     invitedAt?: string;      // ISO string of datetime
 };
+
+export type About = {
+    _id?: string;
+    heroSubtitle?: string;
+    background?: string;
+    purpose?: string;
+    mission?: string;
+    vision?: string;
+    goals?: any[];      // Keeping this as array since we're not changing it
+};
+
+
+

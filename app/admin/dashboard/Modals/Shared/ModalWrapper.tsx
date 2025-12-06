@@ -82,7 +82,7 @@ export default function ModalWrapper() {
                         {modal.type === 'deleteResource' && <DeleteResourceModal resource={modal.data} />}
 
                         {modal.type === 'addAdmin' && <InviteAdminFormModal />}
-                        {modal.type === 'deleteResource' && <DeleteAdminModal data={modal.data} />}
+                        {modal.type === 'deleteAdmin' && <DeleteAdminModal data={modal.data} />}
                     </div>
                 </div>
             </div>

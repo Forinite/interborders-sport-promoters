@@ -90,3 +90,12 @@ export const RESOURCES_QUERY = `*[_type == "resource"] | order(publishedAt desc)
   file { asset->{ _id, url } }
 }`;
 ;
+
+export const ABOUT_QUERY = `*[_type == "about"][0]{
+  heroSubtitle,
+  background,
+  purpose,
+  mission,
+  vision,
+  goals
+}`;

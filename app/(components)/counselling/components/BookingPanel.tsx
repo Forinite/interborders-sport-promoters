@@ -19,19 +19,52 @@ export default function BookingPanel() {
     const [selectedDate, setSelectedDate] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSubmitted, setIsSubmitted] = useState(false);
+    const [fullName, setFullName] = useState("");
+    const [email, setEmail] = useState("");
+    const [phone, setPhone] = useState("");
+    const [time, setTime] = useState("");
+    const [message, setMessage] = useState("");
 
     const today = new Date().toISOString().split('T')[0];
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!selectedDate) return;
+        if (!selectedDate || !time) return;
 
         setIsSubmitting(true);
-        await new Promise(res => setTimeout(res, 1400));
+
+        const res = await fetch("/api/counselling/book", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                fullName,
+                email,
+                phone,
+                date: selectedDate,
+                time,
+                message
+            }),
+        });
+
         setIsSubmitting(false);
-        setIsSubmitted(true);
-        setTimeout(() => setIsSubmitted(false), 5000);
+
+        if (res.ok) {
+            setIsSubmitted(true);
+
+            // clear fields
+            setFullName("");
+            setEmail("");
+            setPhone("");
+            setSelectedDate("");
+            setTime("");
+            setMessage("");
+
+            setTimeout(() => setIsSubmitted(false), 5000);
+        } else {
+            alert("Failed to send request.");
+        }
     };
+
 
     return (
         <div className="sticky top-6 lg:top-8">
@@ -60,6 +93,7 @@ export default function BookingPanel() {
                             <Input
                                 placeholder="Full Name"
                                 className="pl-12 h-14 text-base border-[#CBD5E1] focus:border-[#0A84FF] focus:ring-4 focus:ring-[#0A84FF]/10 transition-all"
+                                onChange={(e) => setFullName(e.target.value)}
                                 required
                                 disabled={isSubmitting || isSubmitted}
                             />
@@ -72,6 +106,7 @@ export default function BookingPanel() {
                                 type="email"
                                 placeholder="Email Address"
                                 className="pl-12 h-14 text-base border-[#CBD5E1] focus:border-[#0A84FF] focus:ring-4 focus:ring-[#0A84FF]/10 transition-all"
+                                onChange={(e) => setEmail(e.target.value)}
                                 required
                                 disabled={isSubmitting || isSubmitted}
                             />
@@ -84,6 +119,7 @@ export default function BookingPanel() {
                                 type="tel"
                                 placeholder="Phone Number"
                                 className="pl-12 h-14 text-base border-[#CBD5E1] focus:border-[#0A84FF] focus:ring-4 focus:ring-[#0A84FF]/10 transition-all"
+                                onChange={(e) => setPhone(e.target.value)}
                                 required
                                 disabled={isSubmitting || isSubmitted}
                             />
@@ -113,7 +149,7 @@ export default function BookingPanel() {
                             <label className="flex items-center gap-2 text-[#1E293B] font-bold text-sm sm:text-base">
                                 <Clock className="h-5 w-5 text-[#0A84FF]" /> Preferred Time
                             </label>
-                            <CustomSelect disabled={isSubmitting || isSubmitted}>
+                            <CustomSelect onValueChange={setTime} value={time} disabled={isSubmitting || isSubmitted}>
                                 <CustomSelectTrigger className="h-14 border-2 border-[#CBD5E1] hover:border-[#0A84FF] hover:bg-[#0A84FF]/5 transition-all">
                                     <Clock className="h-5 w-5 text-[#0A84FF]" />
                                     <CustomSelectValue placeholder="Choose a time slot" />

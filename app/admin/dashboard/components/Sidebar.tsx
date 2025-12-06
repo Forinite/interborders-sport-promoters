@@ -23,6 +23,7 @@ const navItems = [
     { name: 'Events', href: '/admin/dashboard/sports/events', icon: Calendar },
     { name: 'News', href: '/admin/dashboard/sports/news', icon: Newspaper },
     { name: 'Resources', href: '/admin/dashboard/counselling/resources', icon: HeartHandshake },
+    { name: 'About Page', href: '/admin/dashboard/about', icon: HeartHandshake },
 ];
 
 interface SidebarProps {

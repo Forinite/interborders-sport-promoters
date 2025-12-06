@@ -1,5 +1,5 @@
 // app/admin/dashboard/Modals/Resources/EditResourceModal.tsx
-
+// app/admin/dashboard/Modals/Resources/EditResourceModal.tsx
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
@@ -40,6 +40,11 @@ export default function EditResourceModal({ resource }: Props) {
     const [body, setBody] = useState<any>(null);
     const [originalImageRef, setOriginalImageRef] = useState<string | null>(null);
     const [originalPdfRef, setOriginalPdfRef] = useState<string | null>(null);
+
+    // Drag states for visual feedback
+    const [isDraggingImage, setIsDraggingImage] = useState(false);
+    const [isDraggingPdf, setIsDraggingPdf] = useState(false);
+
     const imageInputRef = useRef<HTMLInputElement>(null);
     const pdfInputRef = useRef<HTMLInputElement>(null);
 
@@ -55,6 +60,57 @@ export default function EditResourceModal({ resource }: Props) {
             setBody(resource.body);
         }
     }, [resource]);
+
+    // Drag & Drop Handlers
+    const handleDragOver = (e: React.DragEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+    };
+
+    const handleDragEnterImage = (e: React.DragEvent) => {
+        e.preventDefault();
+        setIsDraggingImage(true);
+    };
+
+    const handleDragLeaveImage = (e: React.DragEvent) => {
+        e.preventDefault();
+        setIsDraggingImage(false);
+    };
+
+    const handleDragEnterPdf = (e: React.DragEvent) => {
+        e.preventDefault();
+        setIsDraggingPdf(true);
+    };
+
+    const handleDragLeavePdf = (e: React.DragEvent) => {
+        e.preventDefault();
+        setIsDraggingPdf(false);
+    };
+
+    const handleDropImage = (e: React.DragEvent<HTMLDivElement>) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setIsDraggingImage(false);
+        const file = e.dataTransfer.files[0];
+        if (file && file.type.startsWith('image/') && file.size <= 10 * 1024 * 1024) {
+            setImageFile(file);
+            setPreview(URL.createObjectURL(file));
+        } else if (file) {
+            toast({ title: 'Invalid file', description: 'Image must be ≤10MB', variant: 'destructive' });
+        }
+    };
+
+    const handleDropPdf = (e: React.DragEvent<HTMLDivElement>) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setIsDraggingPdf(false);
+        const file = e.dataTransfer.files[0];
+        if (file && file.type === 'application/pdf' && file.size <= 50 * 1024 * 1024) {
+            setPdfFile(file);
+        } else if (file) {
+            toast({ title: 'Invalid file', description: 'PDF must be ≤50MB', variant: 'destructive' });
+        }
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -146,9 +202,21 @@ export default function EditResourceModal({ resource }: Props) {
                                 </div>
                             ) : (
                                 <label className="block">
-                                    <div className="flex flex-col items-center justify-center w-full h-44 border-2 border-dashed border-slate-300 rounded-lg cursor-pointer hover:border-[#0A84FF] hover:bg-slate-50 transition-all">
-                                        <Upload className="h-9 w-9 text-slate-500 mb-1" />
-                                        <p className="text-sm text-slate-600">Replace PDF</p>
+                                    <div
+                                        className={`flex flex-col items-center justify-center w-full h-44 border-2 border-dashed rounded-lg cursor-pointer transition-all duration-300
+                                            ${isDraggingPdf
+                                            ? 'border-[#0A84FF] bg-[#0A84FF]/5 shadow-lg scale-[1.02]'
+                                            : 'border-slate-300 hover:border-[#0A84FF] hover:bg-slate-50'
+                                        }`}
+                                        onDragOver={handleDragOver}
+                                        onDragEnter={handleDragEnterPdf}
+                                        onDragLeave={handleDragLeavePdf}
+                                        onDrop={handleDropPdf}
+                                    >
+                                        <Upload className={`h-9 w-9 mb-1 transition-colors ${isDraggingPdf ? 'text-[#0A84FF]' : 'text-slate-500'}`} />
+                                        <p className={`text-sm font-medium transition-colors ${isDraggingPdf ? 'text-[#0A84FF]' : 'text-slate-600'}`}>
+                                            {isDraggingPdf ? 'Drop PDF here' : 'Replace PDF'}
+                                        </p>
                                         <p className="text-xs text-slate-400">Max 50MB</p>
                                     </div>
                                     <input ref={pdfInputRef} type="file" accept=".pdf" className="hidden" onChange={(e) => {
@@ -185,15 +253,31 @@ export default function EditResourceModal({ resource }: Props) {
                                 </div>
                             ) : (
                                 <label className="block">
-                                    <div className="flex flex-col items-center justify-center w-full h-44 border-2 border-dashed border-slate-300 rounded-lg cursor-pointer hover:border-[#0A84FF] hover:bg-slate-50 transition-all">
-                                        <Upload className="h-9 w-9 text-slate-500 mb-1" />
-                                        <p className="text-sm text-slate-600">Change image</p>
+                                    <div
+                                        className={`flex flex-col items-center justify-center w-full h-44 border-2 border-dashed rounded-lg cursor-pointer transition-all duration-300
+                                            ${isDraggingImage
+                                            ? 'border-[#0A84FF] bg-[#0A84FF]/5 shadow-lg scale-[1.02]'
+                                            : 'border-slate-300 hover:border-[#0A84FF] hover:bg-slate-50'
+                                        }`}
+                                        onDragOver={handleDragOver}
+                                        onDragEnter={handleDragEnterImage}
+                                        onDragLeave={handleDragLeaveImage}
+                                        onDrop={handleDropImage}
+                                    >
+                                        <Upload className={`h-9 w-9 mb-1 transition-colors ${isDraggingImage ? 'text-[#0A84FF]' : 'text-slate-500'}`} />
+                                        <p className={`text-sm font-medium transition-colors ${isDraggingImage ? 'text-[#0A84FF]' : 'text-slate-600'}`}>
+                                            {isDraggingImage ? 'Drop image here' : 'Change image'}
+                                        </p>
                                         <p className="text-xs text-slate-400">Max 10MB</p>
                                     </div>
                                     <input ref={imageInputRef} type="file" accept="image/*" className="hidden" onChange={(e) => {
                                         const file = e.target.files?.[0];
-                                        if (file && file.size <= 10 * 1024 * 1024) { setImageFile(file); setPreview(URL.createObjectURL(file)); }
-                                        else if (file) toast({ title: 'Too large', description: 'Max 10MB', variant: 'destructive' });
+                                        if (file && file.size <= 10 * 1024 * 1024) {
+                                            setImageFile(file);
+                                            setPreview(URL.createObjectURL(file));
+                                        } else if (file) {
+                                            toast({ title: 'Too large', description: 'Max 10MB', variant: 'destructive' });
+                                        }
                                     }} />
                                 </label>
                             )}

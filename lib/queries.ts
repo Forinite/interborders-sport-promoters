@@ -79,7 +79,6 @@ export const RESOURCES_QUERY = `*[_type == "resource"] | order(publishedAt desc)
 }`;
 
 
-// lib/queries.ts
 export const ADMINS_QUERY = `
   *[_type == "adminAccount"] | order(_createdAt desc) {
     _id,
@@ -88,3 +87,12 @@ export const ADMINS_QUERY = `
   }
 `;
 
+
+export const ABOUT_QUERY = `*[_type == "about"][0]{
+  heroSubtitle,
+  background,
+  purpose,
+  mission,
+  vision,
+  goals
+}`;
