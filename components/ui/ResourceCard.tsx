@@ -75,9 +75,15 @@ export default function ResourceCard({ resource }: { resource: Resource }) {
         action: () => <span className="text-slate-400 text-sm">No action</span>,
     };
 
-    const action = resource.format === 'article'
-        ? config.action(resource._id)
-        : config.action(resource.format === 'pdf' ? resource.fileUrl : resource.videoUrl);
+    const fileOrVideoUrl =
+        resource.format === "pdf" ? resource.fileUrl : resource.videoUrl;
+
+    if (!fileOrVideoUrl) return null;
+    const action =
+        resource.format === "article"
+            ? config.action(resource._id)
+            : config.action(fileOrVideoUrl);
+
 
     return (
         <div className="group relative bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden hover:shadow-lg transition-all duration-300">
